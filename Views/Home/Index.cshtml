@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <label class="control-label">Day</label>
-                                <select asp-for="DOWSelection" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
                                     <option value="8">All</option>
                                 </select>
                             </div>
@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <div class="col-sm-3">
                                 <label class="control-label">Time</label>
-                                <select asp-for="TimeSelection" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                                <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
                                     <option value="-">All</option>
                                 </select>
                             </div>
@@ -48,7 +48,7 @@
                             <div class="col-sm-3" id="filter-value-group">
                                 <label class="control-label">Town</label>
                                 <!-- Add Select Town -->
-                                <select asp-for="TownSelection" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
+                                <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
                                     <option value="-">Select Town</option>
                                 </select>
                             </div>

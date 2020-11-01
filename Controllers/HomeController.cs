@@ -43,6 +43,11 @@ namespace DeigCrud.Controllers
 
         public IActionResult Index()
         {
+            var list = TempData["id"];
+            if (list != null)
+            {
+                listId = Convert.ToInt32(list);
+            }
             var dlmodel = new DlViewModel()
             {
                 TownModel = PopulateTowns(),
@@ -58,8 +63,14 @@ namespace DeigCrud.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(char? SuspendSelect, int? DOWSelection, int? TimeSelection, string TownSelection)
-        {  
+        public IActionResult Index(char? SuspendSelect, int? DOWSelect, int? TimeSelect, string TownSelect)
+        {
+            //todo: code for null vars coming in.
+            //var list = TempData["id"];
+            //if (list == null)
+            //{
+            //    listId = Convert.ToInt32(list);
+            //}
             b = (char)SuspendSelect;
             //dayId = (int)DOWSelection;
             //timeId = (int)TimeSelection;
@@ -70,7 +81,7 @@ namespace DeigCrud.Controllers
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, DOWSelection, TimeSelection, TownSelection)
+                ListModel = PopulateList(listId, b, DOWSelect, TimeSelect, TownSelect)
             };
 
             return View(dlmodel);
@@ -92,7 +103,20 @@ namespace DeigCrud.Controllers
                 ListModel = PopulateList(listId, b,dayId, timeId, town)
             };
 
+            TempData["ListId"] = listId;
             return View ("Update", dlmodel);   //  Update a meeting: " + id.ToString();
+        }
+
+        [HttpPost]
+        public IActionResult Update (DlViewModel dlModel)
+        {
+            int id = dlModel.ListIdSelect;
+            int rc = UpdateList(dlModel);
+
+            TempData["id"] =  id;
+            return RedirectToAction("Index");
+
+            //return View();
         }
 
         public IActionResult Delete(int id)
@@ -117,7 +141,6 @@ namespace DeigCrud.Controllers
                 {
                     try
                     {
-
                         while (dr.Read())
                         {
                             items.Add(new SelectListItem
@@ -212,12 +235,18 @@ namespace DeigCrud.Controllers
             return items;
         }
 
-        private static List<MeetingListModel> PopulateList(int? listId, char? b, int? dow, int? timeId, string? town)
+#nullable enable
+        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string? town)
         {
-            // @Suspend BIT = NULL
-            // @DOWID INTEGER = NULL,
-            // @TimeID INTEGER = NULL,
-            // @Town VARCHAR(25) = NULL,
+            //@ListId int
+            //@Suspend bit
+            //@DOWID int 
+            //@GroupName string
+            //@Information string
+            //@Location string 
+            //@Type = string
+            //@TimeID int,
+            //@Town string
 
             List<MeetingListModel> meetingList = new List<MeetingListModel>();
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
@@ -320,6 +349,156 @@ namespace DeigCrud.Controllers
 
                 return meetingList;
             }
+        }
+
+#nullable enable
+        // Update List
+        public static int UpdateList(DlViewModel dl)
+        {
+            //@ListId int
+            //@Suspend bit
+            //@DOWID int 
+            //@GroupName string
+            //@Information string
+            //@Location string 
+            //@Type = string
+            //@TimeID int,
+            //@Town string
+            //int list = 0;
+            int rc = -1;
+            
+
+            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+            {
+                // connection.Open();
+
+                string sql = "spUpdateList";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Add Parms
+                // ListId
+                SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
+                if (dl.ListIdSelect == 0)
+                {
+                    listid.Value = null;
+                }
+                else
+                {
+                    listid.Value = dl.ListIdSelect;
+                }
+
+                // Suspend
+                SqlParameter bsuspend = cmd.Parameters.Add("@Suspend", SqlDbType.Bit);
+                if (dl.SuspendSelect == "False")
+                {
+                    bsuspend.Value = false;
+                }
+                else if (dl.SuspendSelect == "True")
+                {
+                    bsuspend.Value = true;
+                }
+                else
+                {
+                    bsuspend.Value = null;
+                }
+
+                //DOW(day of week id)
+                int dow = Convert.ToInt32(dl.DOWSelect);
+                SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);
+
+                if (dow > 0 && dow < 8)
+                {
+                    dowid.Value = (int)dow;
+                }
+                else
+                {
+                    dowid.Value = null;
+                }
+
+                //// Time Id
+                int timeId = Convert.ToInt32(dl.TimeSelect);
+                SqlParameter timeid = cmd.Parameters.Add("@TimeID", SqlDbType.Int);
+                if (timeId > 0 && timeId < 370)
+                {
+                    timeid.Value = (int)timeId;
+                }
+                else
+                {
+                    timeid.Value = null;
+                }
+
+                // Town
+                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);
+                if (dl.TownSelect.Length == 0)
+                {
+                    townname.Value = null;
+                }
+                else
+                {
+                    townname.Value = dl.TownSelect.ToString();
+                }
+
+                // Group Name
+                SqlParameter groupname = cmd.Parameters.Add("@GroupName", SqlDbType.NVarChar);
+                if (dl.GroupNameSelect.Length == 0)
+                {
+                    groupname.Value = null;
+                }
+                else
+                {
+                    groupname.Value = dl.GroupNameSelect.ToString();
+                }
+
+                // Informantion
+                SqlParameter information = cmd.Parameters.Add("@Information", SqlDbType.NVarChar);
+                if (dl.InformationSelect.Length == 0)
+                {
+                    information.Value = null;
+                }
+                else
+                {
+                    information.Value = dl.InformationSelect.ToString();
+                }
+
+                // Location
+                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.NVarChar);
+                if (dl.LocationSelect.Length == 0)
+                {
+                    location.Value = null;
+                }
+                else
+                {
+                    location.Value = dl.LocationSelect.ToString();
+                }
+
+                // Type
+                SqlParameter type = cmd.Parameters.Add("@Type", SqlDbType.NVarChar);
+                if (dl.TypeSelect.Length == 0)
+                {
+                    type.Value = null;
+                }
+                else
+                {
+                    type.Value = dl.TypeSelect.ToString();
+                }
+
+                //using (SqlCommand command = new SqlCommand(sql, connection))
+                //{
+                connection.Open();
+                try
+                {
+                    rc = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    msg = ex.ToString();
+                }
+                connection.Close();
+               
+            }
+           
+            return rc;
         }
 
         private static string ExportMeetingList()
