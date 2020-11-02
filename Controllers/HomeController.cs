@@ -13,21 +13,21 @@ namespace DeigCrud.Controllers
     //todo: Change background on buttons
     //todo: Change font size to make it smaller
     //todo: Remove titles in cshtml to make the presentation iframe ready
-    //todo: Correct spelling in Group name in sp
-    //todo: Remove empty space for first 2 columns in sp.
+    //todo:     z Correct spelling in Group name in sp
+    //todo:     z Remove empty space for first 2 columns in sp.
     //todo: bootstrap styling
     //todo: error log add
     //todo: change default int values from 0 to -1
 
     // Store Procedure to add:
     // Insert or create
-    // Update
+    //  z Update
     // Delete
 
-    // @DOWID INTEGER = NULL,
-    // @TimeID INTEGER = NULL,
-    // @Town VARCHAR(25) = NULL,
-    // @Suspend BIT = NULL
+    //todo: z 11/2/2020 Clean up updates -- remove not needed cells from update form. 
+    //todo: 11/2/2020 Chect the use of TempData
+    //todo: 11/2/2020 Remove not needed  code
+    //todo: z Disable input button
 
     public class HomeController : Controller
     {
@@ -110,13 +110,11 @@ namespace DeigCrud.Controllers
         [HttpPost]
         public IActionResult Update (DlViewModel dlModel)
         {
-            int id = dlModel.ListIdSelect;
-            int rc = UpdateList(dlModel);
+            int id = Convert.ToInt32(TempData["ListId"]);
+            int rc = UpdateList(dlModel, id);
 
             TempData["id"] =  id;
             return RedirectToAction("Index");
-
-            //return View();
         }
 
         public IActionResult Delete(int id)
@@ -353,39 +351,27 @@ namespace DeigCrud.Controllers
 
 #nullable enable
         // Update List
-        public static int UpdateList(DlViewModel dl)
+        public static int UpdateList(DlViewModel dl,int id)
         {
-            //@ListId int
-            //@Suspend bit
-            //@DOWID int 
-            //@GroupName string
-            //@Information string
-            //@Location string 
-            //@Type = string
-            //@TimeID int,
-            //@Town string
-            //int list = 0;
-            int rc = -1;
-            
+          
+            int rc = -1; // Is this needed?            
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
-                // connection.Open();
-
-                string sql = "spUpdateList";
+                string sql = "spUpdateList";    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 // Add Parms
                 // ListId
                 SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
-                if (dl.ListIdSelect == 0)
+                if (id == 0)
                 {
                     listid.Value = null;
                 }
                 else
                 {
-                    listid.Value = dl.ListIdSelect;
+                    listid.Value = id;
                 }
 
                 // Suspend
@@ -416,7 +402,7 @@ namespace DeigCrud.Controllers
                     dowid.Value = null;
                 }
 
-                //// Time Id
+                // Time Id
                 int timeId = Convert.ToInt32(dl.TimeSelect);
                 SqlParameter timeid = cmd.Parameters.Add("@TimeID", SqlDbType.Int);
                 if (timeId > 0 && timeId < 370)
@@ -483,8 +469,6 @@ namespace DeigCrud.Controllers
                     type.Value = dl.TypeSelect.ToString();
                 }
 
-                //using (SqlCommand command = new SqlCommand(sql, connection))
-                //{
                 connection.Open();
                 try
                 {
@@ -501,6 +485,7 @@ namespace DeigCrud.Controllers
             return rc;
         }
 
+        // Nullables
         private static string ExportMeetingList()
         {
             string comma = ", ";

@@ -22,28 +22,22 @@
             <table class="table table-bordered table-sm table-striped">
                 <thead>
                     <tr>
-                        <th>ListId</th>
-                        <th>SuspendId</th>                        
-                        <th>Day Id</th>
+                        <th>List Id</th>
+                        <th>Suspend True</th>                        
                         <th>Day</th>
-                        <th>TimeId</th>
                         <th>Time</th>
                         <th>Town</th>
-                        <th>Town</th>
-                        <th>Group Name</th>
-                        <th>Information Txt</th>
+                        <th>Group Name</th>                        
                         <th>Information</th>
-                        <th>Location Txt</th>
                         <th>Location</th>
-                        <th>Type Txt</th>
                         <th>Type</th>
-                        <th>Update : Delete</th>
+                        <th>Update</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model.ListModel == null)
                     {
-                        <tr><td colspan="5" class="text-center">No Meeting Lsit for that selection</td></tr>
+                        <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
                     }
                     else
                     {
@@ -51,61 +45,50 @@
                         {
                             <!-- Begin of table -->
                             <tr>
+                                <td>@m.ListID</td>                                 
                                 <td>
-                                   <div class="form-group">
-                                        <input asp-for="ListIdSelect" class="form-control" value="@m.ListID" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <!--<select asp-for="SuspendSelect" asp-items="Model.Suspended"></select>-->
-                                    <select asp-for="SuspendSelect" asp-items="@Model.Suspended">
+                                   <select asp-for="SuspendSelect" asp-items="@Model.Suspended">
                                         <option value="@m.suspend">@m.suspend</option>
                                     </select>
-                                </td>
-                               
+                                </td>                               
                                 <td>
-                                    <!-- <select asp-for="DOWSelect" class="form-control" asp-items="@*@(new SelectList(@Model.DOWModel, "Value"*@, "Text"));"> -->
-                                    <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                   <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
                                         <option value="@m.DOW">@m.Day</option>
                                     </select>
-                                </td>
-                                <td>@m.Day</td>
+                                </td>                                
                                 <td>
                                     <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
-                                       <option value="@m.TimeID">@m.Time</option>                                     </select>
+                                       <option value="@m.TimeID">@m.Time</option>                                     
+                                    </select>
                                 </td>
-                                <td>@m.Time</td>
                                 <td>
                                     <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
                                         <option value="@m.Town">@m.Town</option>
                                     </select>
-                                </td>
-                                <td>@m.Town</td>
+                                </td>                                
                                 <td>
                                     <input asp-for="GroupNameSelect" class="form-control" value="@m.GroupName" />
                                 </td>
-
                                 <td>
                                     <div class="form-group">
                                         <input asp-for="InformationSelect" class="form-control" value="@m.Information" />
                                     </div>
-                                </td>
-                                <td>@m.Information</td>
+                                </td>                               
                                 <td>
                                     <div class="form-group">
                                         <input asp-for="LocationSelect" class="form-control" value="@m.Location" />
                                     </div>
-                                </td>
-                                <td>@m.Location</td>
+                                </td>                                
                                 <td>
                                     <div class="form-group">
                                         <input asp-for="TypeSelect" class="form-control" value="@m.Type" />
                                     </div>
                                 </td>
-                                <td>@m.Type</td>
                                 <td>
-                                    <!--     <button type="submit" class="btn btn-sm btn-primary>Update</button> -->
-
+                                    <div class="text-center panel-body">
+                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                    </div>
+                                </td>
                             </tr>
                         }
                     }
@@ -114,17 +97,10 @@
             <div class="form-inline">
                 <div class="text-center panel-body">
                     <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
-                </div>
-                <div class="text-center panel-body">
-                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                </div>
-
+                </div>               
             </div>
-
-
         </main>
     </form>
 </div>
-    
 </body>
 </html>
