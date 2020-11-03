@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net;
 using System.Text;
 
 namespace DeigCrud.Controllers
@@ -30,15 +31,18 @@ namespace DeigCrud.Controllers
     //todo: z Disable input button
 
     public class HomeController : Controller
-    {
-        // Vars for holding information to pass to the spList
+    {       
         // 0 might be better as -1 for the int values
+        const string SPUPATE = "spUpdateList";
+        const string SPCREATE = "spCreateList";
+
         int listId = 0;
         char b = 'a';
         int dayId = 0;
         int timeId = 0;
         string town = "";
         static string msg = "";
+        string sp = "";
         //private Stream fileStream;
 
         public IActionResult Index()
@@ -53,7 +57,7 @@ namespace DeigCrud.Controllers
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town)
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
             };
 
             dlmodel.SuspendSelect = "a";
@@ -81,15 +85,40 @@ namespace DeigCrud.Controllers
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, DOWSelect, TimeSelect, TownSelect)
+                ListModel = PopulateList(listId, b, DOWSelect, TimeSelect, TownSelect, sp)
             };
 
             return View(dlmodel);
         }
 
+        // Create Get
         public IActionResult Create()
         {
-            return View("Create");
+            var dlmodel = new DlViewModel()
+            {
+                TownModel = PopulateTowns(),
+                DOWModel = PopulateDOW(),
+                TimeModel = PopulateTime(),
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
+            };
+            return View("Create", dlmodel);
+        }
+
+        // Create Post
+        [HttpPost]
+        public IActionResult Create(DlViewModel dl)
+        {
+            //todo: Create constants for sp for create and update
+            //todo: Call function, passing in the model, and sp name.
+            //todo: redirect to index to display the new record with ListId
+            //todo: Create page -- add vars containers
+
+            //int id = Convert.ToInt32(TempData["ListId"]);
+           string rc = UpdateList(dl, listId, SPCREATE);
+
+            // Int or string?
+            TempData["id"] = Convert.ToInt32(rc);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Update(int id )
@@ -100,23 +129,25 @@ namespace DeigCrud.Controllers
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b,dayId, timeId, town)
+                ListModel = PopulateList(listId, b,dayId, timeId, town, sp)
             };
 
-            TempData["ListId"] = listId;
+            TempData["id"] = listId;
             return View ("Update", dlmodel);   //  Update a meeting: " + id.ToString();
         }
 
+        // Update Post
         [HttpPost]
         public IActionResult Update (DlViewModel dlModel)
         {
             int id = Convert.ToInt32(TempData["ListId"]);
-            int rc = UpdateList(dlModel, id);
+            string rc = UpdateList(dlModel, id, SPUPATE);
 
             TempData["id"] =  id;
             return RedirectToAction("Index");
         }
 
+        //  Delete get
         public IActionResult Delete(int id)
         {
             return View("Delete"); // Delete meeting: " + id.ToString();
@@ -234,7 +265,7 @@ namespace DeigCrud.Controllers
         }
 
 #nullable enable
-        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string? town)
+        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string town, string? sp)
         {
             //@ListId int
             //@Suspend bit
@@ -251,7 +282,7 @@ namespace DeigCrud.Controllers
             {
                 connection.Open();
 
-                string sql = "spList";
+                string sql = "spMaintenanceList";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -340,7 +371,7 @@ namespace DeigCrud.Controllers
                     }
                     catch (SqlException ex)
                     {
-                        msg = msg + " spList: " + ex.Message.ToString();
+                        msg = msg + " spmaintenanceList: " + ex.Message.ToString();
                     }
                     connection.Close();
                 }
@@ -351,44 +382,47 @@ namespace DeigCrud.Controllers
 
 #nullable enable
         // Update List
-        public static int UpdateList(DlViewModel dl,int id)
+        public static string UpdateList(DlViewModel dl,int id, string sp)
         {
           
             int rc = -1; // Is this needed?            
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
-                string sql = "spUpdateList";    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
+                string sql = sp;    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
-
+               
                 // Add Parms
                 // ListId
-                SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
-                if (id == 0)
+                if (sp == SPUPATE)
                 {
-                    listid.Value = null;
+                    SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
+                    if (id == 0)
+                    {                        
+                        listid.Value = null;
+                    }
+                    else
+                    {                        
+                        listid.Value = id;
+                    }
                 }
                 else
                 {
-                    listid.Value = id;
+                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;                  
                 }
 
                 // Suspend
                 SqlParameter bsuspend = cmd.Parameters.Add("@Suspend", SqlDbType.Bit);
-                if (dl.SuspendSelect == "False")
-                {
-                    bsuspend.Value = false;
-                }
-                else if (dl.SuspendSelect == "True")
+                if (dl.SuspendSelect == "1")
                 {
                     bsuspend.Value = true;
                 }
-                else
+                else 
                 {
-                    bsuspend.Value = null;
+                    bsuspend.Value = false;
                 }
-
+               
                 //DOW(day of week id)
                 int dow = Convert.ToInt32(dl.DOWSelect);
                 SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);
@@ -399,7 +433,7 @@ namespace DeigCrud.Controllers
                 }
                 else
                 {
-                    dowid.Value = null;
+                    dowid.Value = 8;
                 }
 
                 // Time Id
@@ -411,14 +445,14 @@ namespace DeigCrud.Controllers
                 }
                 else
                 {
-                    timeid.Value = null;
+                    timeid.Value = 0;
                 }
 
                 // Town
-                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);
-                if (dl.TownSelect.Length == 0)
+                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);              
+                if (String.IsNullOrEmpty(dl.TownSelect))
                 {
-                    townname.Value = null;
+                     townname.Value = "";
                 }
                 else
                 {
@@ -427,9 +461,9 @@ namespace DeigCrud.Controllers
 
                 // Group Name
                 SqlParameter groupname = cmd.Parameters.Add("@GroupName", SqlDbType.NVarChar);
-                if (dl.GroupNameSelect.Length == 0)
+                if (String.IsNullOrEmpty(dl.GroupNameSelect))                    
                 {
-                    groupname.Value = null;
+                    groupname.Value = "";
                 }
                 else
                 {
@@ -438,9 +472,9 @@ namespace DeigCrud.Controllers
 
                 // Informantion
                 SqlParameter information = cmd.Parameters.Add("@Information", SqlDbType.NVarChar);
-                if (dl.InformationSelect.Length == 0)
-                {
-                    information.Value = null;
+               if (String.IsNullOrEmpty(dl.InformationSelect))
+                    {
+                    information.Value = "";
                 }
                 else
                 {
@@ -448,10 +482,10 @@ namespace DeigCrud.Controllers
                 }
 
                 // Location
-                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.NVarChar);
-                if (dl.LocationSelect.Length == 0)
-                {
-                    location.Value = null;
+                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.NVarChar);               
+               if (String.IsNullOrEmpty(dl.LocationSelect))
+                    {
+                    location.Value = "";
                 }
                 else
                 {
@@ -460,9 +494,9 @@ namespace DeigCrud.Controllers
 
                 // Type
                 SqlParameter type = cmd.Parameters.Add("@Type", SqlDbType.NVarChar);
-                if (dl.TypeSelect.Length == 0)
+                if (String.IsNullOrEmpty(dl.TypeSelect))               
                 {
-                    type.Value = null;
+                    type.Value = "";
                 }
                 else
                 {
@@ -472,20 +506,29 @@ namespace DeigCrud.Controllers
                 connection.Open();
                 try
                 {
-                    rc = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+                    if ( sp == SPCREATE)
+                    {
+                        msg = cmd.Parameters["@new_id"].Value.ToString();
+                       
+                        
+                    }                   
                 }
                 catch (SqlException ex)
                 {
                     msg = ex.ToString();
                 }
-                connection.Close();
-               
+                finally
+                {
+                   
+                    connection.Close();
+                }
             }
            
-            return rc;
+            return msg.ToString();
         }
-
-        // Nullables
+               
+#nullable enable
         private static string ExportMeetingList()
         {
             string comma = ", ";
@@ -511,14 +554,20 @@ namespace DeigCrud.Controllers
                     msg = ex.ToString();
                 }
                 StringBuilder stringBuilder = new StringBuilder();
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 foreach (DataColumn column in dataTable.Columns)
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                 {
                     stringBuilder.Append(column.ColumnName + comma);
                 }
                 stringBuilder.AppendLine();
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 foreach (DataRow row in dataTable.Rows)
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                 {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                     foreach (DataColumn column2 in dataTable.Columns)
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                     {
                         stringBuilder.Append(row[column2.ColumnName].ToString() + comma);
                     }
