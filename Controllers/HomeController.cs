@@ -150,7 +150,63 @@ namespace DeigCrud.Controllers
         //  Delete get
         public IActionResult Delete(int id)
         {
-            return View("Delete"); // Delete meeting: " + id.ToString();
+            listId = id;
+            var dlmodel = new DlViewModel()
+            {
+                TownModel = PopulateTowns(),
+                DOWModel = PopulateDOW(),
+                TimeModel = PopulateTime(),
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
+            };
+
+            TempData["id"] = listId;
+            return View("Delete", dlmodel);   //  Update a meeting: " + id.ToString();
+        }
+
+
+        [HttpPost]
+        public IActionResult Delete()
+        {
+            string strId = TempData["id"].ToString();
+            if (!String.IsNullOrEmpty(strId))
+            {
+                listId = Convert.ToInt32(strId);
+            }
+            else
+            {
+                // ViewBag error msg
+                return View();
+            }
+
+            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+            {
+                string sql = "spDeleteList";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                //todo: Finish this code
+                SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
+                listid.Value = listId;
+
+                connection.Open();
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch(SqlException ex)
+                {
+                    msg = ex.Message.ToString();
+                }
+                finally
+                {
+                    connection.Close();
+                }
+                //todo: User ViewBag to display record deleted.
+
+                // Set this to null or Index will not display data.
+                TempData["id"] = null;
+                return RedirectToAction("Index");
+            }
         }
 
         // This should go into a separate file
@@ -385,7 +441,7 @@ namespace DeigCrud.Controllers
         public static string UpdateList(DlViewModel dl,int id, string sp)
         {
           
-            int rc = -1; // Is this needed?            
+           // int rc = -1; // Is this needed?            
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
@@ -509,8 +565,7 @@ namespace DeigCrud.Controllers
                     cmd.ExecuteNonQuery();
                     if ( sp == SPCREATE)
                     {
-                        msg = cmd.Parameters["@new_id"].Value.ToString();
-                       
+                        msg = cmd.Parameters["@new_id"].Value.ToString();                      
                         
                     }                   
                 }
