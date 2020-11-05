@@ -14,6 +14,8 @@ namespace DeigCrud.Models
 
     public class DlViewModel
     {
+        [TempData]
+        public string FormResult { get; set; }
         public int ListIdSelect { get; set; }
         // Suspend
         [BindProperty]

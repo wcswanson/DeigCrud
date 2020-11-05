@@ -1,81 +1,98 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-<h1>Delete</h1>
-<form asp-controller="Home" method="post" role="form">
-    <main role="main" class="pb-3">
-        <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
-        <!-- meeting list here-->
-        <table class="table table-bordered table-sm table-striped">
-            <thead>
-                <tr>
-                    <th>List Id</th>
-                    <th>Suspend True</th>
-                    <th>Day</th>
-                    <th>Time</th>
-                    <th>Town</th>
-                    <th>Group Name</th>
-                    <th>Information</th>
-                    <th>Location</th>
-                    <th>Type</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.ListModel == null)
-                {
-                    <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
-                }
-                else
-                {
-                    <!-- Begin of table -->
-                    @foreach (var m in Model.ListModel)
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DEIG - Delete List</title>
+    <!-- check the path for added bootstrap -->
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Delete Page</h1>
+    <form asp-controller="Home" method="post" role="form">
+        <main role="main" class="pb-3">
+            <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
+            <!-- meeting list here-->
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>List Id</th>
+                        <th>Suspend True</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Town</th>
+                        <th>Group Name</th>
+                        <th>Information</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ListModel == null)
+                    {
+                        <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
+                    }
+                    else
                     {
                         <!-- Begin of table -->
-                        <tr>
-                            <td>@m.ListID</td>
-                            <td>
-                                @m.suspend
+                        @foreach (var m in Model.ListModel)
+                        {
+                            <!-- Begin of table -->
+                            <tr>
+                                <td>@m.ListID</td>
+                                <td>
+                                    @m.suspend
 
-                            </td>
-                            <td>
-                                @m.Day
+                                </td>
+                                <td>
+                                    @m.Day
 
-                            </td>
-                            <td>
-                                @m.Time
+                                </td>
+                                <td>
+                                    @m.Time
 
-                            </td>
-                            <td>
-                                @m.Town
+                                </td>
+                                <td>
+                                    @m.Town
 
-                            </td>
-                            <td>
-                                @m.GroupName
+                                </td>
+                                <td>
+                                    @m.GroupName
 
-                            </td>
-                            <td>
-                                @m.Information
+                                </td>
+                                <td>
+                                    @m.Information
 
-                            </td>
-                            <td>
-                                @m.Location
+                                </td>
+                                <td>
+                                    @m.Location
 
-                            </td>
-                            <td>
-                                @m.Type
+                                </td>
+                                <td>
+                                    @m.Type
 
-                            </td>
-                            <td>
-                                <div class="text-center panel-body">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <div class="text-center panel-body">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-        <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
-    </main>
-</form>
+                </tbody>
+            </table>
+            <hr />
+            <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+            <hr />
+            <h2>@ViewBag.Result</h2>
+        </main>
+    </form>
+</body>
+</html>

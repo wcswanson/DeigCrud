@@ -26,15 +26,21 @@ namespace DeigCrud.Controllers
     // Delete
 
     //todo: z 11/2/2020 Clean up updates -- remove not needed cells from update form. 
-    //todo: 11/2/2020 Chect the use of TempData
-    //todo: 11/2/2020 Remove not needed  code
+    //todo: z 11/2/2020 Chect the use of TempData
+    //todo: z 11/2/2020 Remove not needed  code
     //todo: z Disable input button
+    //todo: Add loogging to a file.
+    //todo: Check for vars floating around that have values that can cause a crash.
 
     public class HomeController : Controller
     {       
         // 0 might be better as -1 for the int values
         const string SPUPATE = "spUpdateList";
         const string SPCREATE = "spCreateList";
+        const string SPDELETE = "spDeleteList";
+        const string UPDATE = "U";
+        const string CREATE = "C";
+        const string DELETE = "D";           
 
         int listId = 0;
         char b = 'a';
@@ -43,10 +49,12 @@ namespace DeigCrud.Controllers
         string town = "";
         static string msg = "";
         string sp = "";
+        
         //private Stream fileStream;
 
         public IActionResult Index()
         {
+            //todo: Add TempData["sender"] for update, created, deleted
             var list = TempData["id"];
             if (list != null)
             {
@@ -60,8 +68,27 @@ namespace DeigCrud.Controllers
                 ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
             };
 
-            dlmodel.SuspendSelect = "a";
+            if (listId > 0)
+            {
+                switch (TempData["sender"])
+                {
+                    case "U":
+                        ViewBag.Result = $"Meeting id:  {listId} has been updated.";
+                        break;
+                    case "C":
+                        ViewBag.Result = $"Meeting id:  {listId} has been created.";
+                        break;
+                    case "D":
+                        ViewBag.Result = $"Meeting id:  {listId} has been deleted.";
+                        break;
+                    default:
+                        break;
+                }
+                //ViewBag.Result = $"Meeting id:  {listId} has been updated.";
+            }
 
+            dlmodel.SuspendSelect = "0";
+            
             return View(dlmodel);
         }
 
@@ -70,11 +97,7 @@ namespace DeigCrud.Controllers
         public IActionResult Index(char? SuspendSelect, int? DOWSelect, int? TimeSelect, string TownSelect)
         {
             //todo: code for null vars coming in.
-            //var list = TempData["id"];
-            //if (list == null)
-            //{
-            //    listId = Convert.ToInt32(list);
-            //}
+
             b = (char)SuspendSelect;
             //dayId = (int)DOWSelection;
             //timeId = (int)TimeSelection;
@@ -91,7 +114,7 @@ namespace DeigCrud.Controllers
             return View(dlmodel);
         }
 
-        // Create Get
+        // Create Get      
         public IActionResult Create()
         {
             var dlmodel = new DlViewModel()
@@ -106,21 +129,23 @@ namespace DeigCrud.Controllers
 
         // Create Post
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(DlViewModel dl)
         {
             //todo: Create constants for sp for create and update
             //todo: Call function, passing in the model, and sp name.
             //todo: redirect to index to display the new record with ListId
-            //todo: Create page -- add vars containers
+            //todo: z Create page -- add vars containers
 
-            //int id = Convert.ToInt32(TempData["ListId"]);
            string rc = UpdateList(dl, listId, SPCREATE);
 
-            // Int or string?
+            // Int or string?           
             TempData["id"] = Convert.ToInt32(rc);
+            TempData["sender"] = CREATE;
             return RedirectToAction("Index");
         }
 
+       // [ValidateAntiForgeryToken]
         public IActionResult Update(int id )
         {
             listId = id;
@@ -132,15 +157,17 @@ namespace DeigCrud.Controllers
                 ListModel = PopulateList(listId, b,dayId, timeId, town, sp)
             };
 
+            ViewBag.Result = "Update meeting with the id:" + listId.ToString();
             TempData["id"] = listId;
             return View ("Update", dlmodel);   //  Update a meeting: " + id.ToString();
         }
 
         // Update Post
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Update (DlViewModel dlModel)
         {
-            int id = Convert.ToInt32(TempData["ListId"]);
+            int id = Convert.ToInt32(TempData["id"]);
             string rc = UpdateList(dlModel, id, SPUPATE);
 
             TempData["id"] =  id;
@@ -148,6 +175,7 @@ namespace DeigCrud.Controllers
         }
 
         //  Delete get
+       // [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             listId = id;
@@ -160,11 +188,13 @@ namespace DeigCrud.Controllers
             };
 
             TempData["id"] = listId;
+          //  TempData["sender"] = UPDATE;
             return View("Delete", dlmodel);   //  Update a meeting: " + id.ToString();
         }
 
 
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult Delete()
         {
             string strId = TempData["id"].ToString();
@@ -179,9 +209,8 @@ namespace DeigCrud.Controllers
             }
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                string sql = "spDeleteList";
-                SqlCommand cmd = new SqlCommand(sql, connection);
+            {                
+                SqlCommand cmd = new SqlCommand(SPDELETE, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 //todo: Finish this code
                 SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
@@ -195,16 +224,19 @@ namespace DeigCrud.Controllers
                 }
                 catch(SqlException ex)
                 {
-                    msg = ex.Message.ToString();
+                   msg = $" spDelete{ex.Message.ToString()}";
                 }
                 finally
                 {
                     connection.Close();
                 }
-                //todo: User ViewBag to display record deleted.
+                
+              
 
                 // Set this to null or Index will not display data.
-                TempData["id"] = null;
+               // ViewBag.Result = "The meeting with the id: " + listId.ToString() + " is staged to be deleted";
+                TempData["id"] = listId;
+                TempData["sender"] = DELETE;
                 return RedirectToAction("Index");
             }
         }
@@ -237,10 +269,13 @@ namespace DeigCrud.Controllers
                     }
                     catch (SqlException ex)
                     {
-                        msg = msg + " spTowns: " + ex.Message.ToString();
+                        msg = msg + $" spTowns: {ex.Message.ToString()}" ;
                     }
-                }
-                connection.Close();
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }               
             }
             return items;
         }
@@ -273,7 +308,7 @@ namespace DeigCrud.Controllers
                     }
                     catch (SqlException ex)
                     {
-                        msg = msg + " spDow: " + ex.Message.ToString();
+                        msg = msg + $" spDow: {ex.Message.ToString()} ";
                     }
                 }
 
@@ -311,7 +346,7 @@ namespace DeigCrud.Controllers
                     }
                     catch (SqlException ex)
                     {
-                        msg = "sptime: " + ex.Message.ToString();
+                        msg = $"spTime: {ex.Message.ToString()}";
                     }
 
                 }
@@ -427,7 +462,7 @@ namespace DeigCrud.Controllers
                     }
                     catch (SqlException ex)
                     {
-                        msg = msg + " spmaintenanceList: " + ex.Message.ToString();
+                        msg = msg + $" spmaintenanceList: {ex.Message.ToString()}";
                     }
                     connection.Close();
                 }
@@ -440,9 +475,6 @@ namespace DeigCrud.Controllers
         // Update List
         public static string UpdateList(DlViewModel dl,int id, string sp)
         {
-          
-           // int rc = -1; // Is this needed?            
-
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
                 string sql = sp;    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
@@ -571,13 +603,13 @@ namespace DeigCrud.Controllers
                 }
                 catch (SqlException ex)
                 {
-                    msg = ex.ToString();
+                    msg = msg + $" spList: {ex.Message.ToString()}";
                 }
                 finally
                 {
-                   
                     connection.Close();
                 }
+               
             }
            
             return msg.ToString();
@@ -606,7 +638,7 @@ namespace DeigCrud.Controllers
                 }
                 catch (InvalidCastException ex)
                 {
-                    msg = ex.ToString();
+                    msg = $" Export to Meeting: {ex.ToString()}";
                 }
                 StringBuilder stringBuilder = new StringBuilder();
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
