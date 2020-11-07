@@ -63,7 +63,18 @@
                                 <input id="Submit1" type="submit" value="Get Selection" />
                             </div>
                         </div>
-                        <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+                                <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+                                <a asp-controller="OnLine" asp-action="Index" class="btn btn-sm btn-secondary">On-line Meetings</a>
+                            </div>
+                        </div>
                     </div>
                     <!-- meeting list here-->
                     <table class="table table-bordered table-sm table-striped">

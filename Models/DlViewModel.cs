@@ -11,7 +11,7 @@ namespace DeigCrud.Models
     //  1. Singular item var to put the selected value in: 'TownSelection'
     //  2. Plural items model name: TownModel
 
-
+    // Deig list View Model
     public class DlViewModel
     {
         [TempData]

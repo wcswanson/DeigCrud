@@ -1,0 +1,56 @@
+﻿@model DeigCrud.Models.DoViewModel
+
+<div class="container-fluid">
+    <h1>Add (create) A New Meeting</h1>
+    <h2 class="alert-danger">@ViewBag.Result</h2>
+    <form asp-controller="Online" method="post" role="form">
+        <table>
+            <tr>
+                <td>Day</td>
+                <td>Time</td>
+                <td>Group Name</td>
+                <td>Meeting ID</td>
+                <td>Password</td>
+                <td>Telephone</td>
+                <td>Type / Notes</td>
+                <td>Create</td>
+            </tr>
+            <tr>
+
+                <td>
+                    <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                        <option value="-">Select day</option>
+                    </select>
+                </td>
+                <td>
+                    <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                        <option value="0">Select Time</option>
+                    </select>
+                </td>
+                <td>
+                    <input asp-for="groupnameSelect" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="meetingidSelect" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="passwordSelect" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="telephoneSelect" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="notesSelect" class="form-control" />
+                </td>
+                <td>
+                    <div class="text-center panel-body">
+                        <button type="submit" class="btn btn-sm btn-primary">Create</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+        <hr />
+        <h2>@ViewBag.Result</h2>
+    </form>
+</div> 

@@ -356,3 +356,6 @@ C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\staticwebassets\DeigCrud
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.dll
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.pdb
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.genruntimeconfig.cache
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Online\Index.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
