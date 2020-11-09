@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model DeigCrud.Models.DlViewModel
 <!DOCTYPE html>
 
 <html>
@@ -13,7 +11,7 @@
 <body>
     <div class="container-fluid">
         <h1>Create A New Meeting</h1>
-        <h2 class="alert-danger">@ViewBag.Result</h2>        
+        <h2 class="alert-danger">@ViewBag.Result</h2>
         <form asp-controller="Home" method="post" role="form">
             <table>
                 <tr>

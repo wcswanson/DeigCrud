@@ -1,0 +1,88 @@
+﻿@model DeigCrud.Models.DoViewModel
+<!-- No <form> on page-->
+<div class="container">
+    <h1>Update</h1>
+    <form asp-controller="Online" method="post" role="form">
+        <main role="main" class="pb-3">
+            <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
+            <!-- meeting list here-->
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Zoom Id</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Group Name</th>
+                        <th>Meeting Id</th>
+                        <th>Password</th>
+                        <th>Telephone</th>
+                        <th>Notes</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.OnlineListModel == null)
+                    {
+                        <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var m in Model.OnlineListModel)
+                        {
+                            <!-- Begin of table -->
+                            <tr>
+                                <td>@m.zoomid</td>
+
+                                <td>
+                                    <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                        <option value="@m.dayid">@m.day</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                                        <option value="@m.timeid">@m.time</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input asp-for="groupnameSelect" class="form-control" value="@m.groupname" />
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="meetingidSelect" class="form-control" value="@m.meetingid" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="pswdSelect" class="form-control" value="@m.pswd" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="telephoneSelect" class="form-control" value="@m.telephone" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="notesSelect" class="form-control" value="@m.notes" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-center panel-body">
+                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                    </div>
+                                </td>
+                            </tr>
+                                }
+                            }
+                </tbody>
+            </table>
+            <div class="form-inline">
+                <div class="text-center panel-body">
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+                </div>
+                <hr />
+                <h2>@ViewBag.Result</h2>
+            </div>
+        </main>
+    </form>
+</div>

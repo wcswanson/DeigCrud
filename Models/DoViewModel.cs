@@ -27,10 +27,13 @@ namespace DeigCrud.Models
         // To get the rest of the online meeting data:
         public int zoomidSelect { get; set; }
         public string meetingidSelect{ get; set; }
-        public string passwordSelect { get; set; }
+        public string pswdSelect { get; set; }
         public string telephoneSelect { get; set; }
         public string groupnameSelect { get; set; }
         public string notesSelect { get; set; }
+
+        // To get the onling meeting model
+        public IEnumerable<OnlineMeetingsModel> OnlineListModel { get; set; }
 
     }
 }

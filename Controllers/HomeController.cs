@@ -356,7 +356,7 @@ namespace DeigCrud.Controllers
         }
 
 #nullable enable
-        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string town, string? sp)
+        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string town, string? sp)  // remove sp?
         {
             //@ListId int
             //@Suspend bit
@@ -473,7 +473,7 @@ namespace DeigCrud.Controllers
 
 #nullable enable
         // Update List
-        public static string UpdateList(DlViewModel dl,int id, string sp)
+        public static string UpdateList(DlViewModel dl,int id, string sp)  // Remove sp from signature?
         {
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
