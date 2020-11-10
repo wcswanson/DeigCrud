@@ -1,7 +1,9 @@
 ﻿@model DeigCrud.Models.DoViewModel
 
 <h1>Delete Page</h1>
-<form asp-controller="Online" method="post" role="form">
+<form method="post" >
+    <!-- role="form" ProcessForm asp-action="ProcessForm" -->
+    <!-- <form method="post" role="form" action="/Online/ProcessForm"> from page source -->
     <main role="main" class="pb-3">
         <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
         <!-- meeting list here-->
@@ -41,7 +43,8 @@
                             <td>@m.notes</td>
                             <td>
                                 <div class="text-center panel-body">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <input type="submit" name="Delete" value="Delete" formaction="Delete" class="btn btn-sm btn-danger" />
+                                    <input type="submit" value="Cancel" asp-controller="Online" asp-action="Cancel" class="btn btn-sm btn-secondary" />
                                 </div>
                             </td>
                         </tr>
@@ -50,8 +53,8 @@
             </tbody>
         </table>
         <hr />
-        <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+        <h3>@ViewBag.Result</h3>
         <hr />
-        <h2>@ViewBag.Result</h2>
+        
     </main>
 </form>

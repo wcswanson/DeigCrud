@@ -20,20 +20,26 @@ namespace DeigCrud.Controllers
         const string CREATE = "C";
         const string DELETE = "D";
 
+        // ZoomId and TempData["id"] is used to pass the id from controller function to controller function
+        // But not the helper functions
         int ZoomId = 0;
         int dayId = 0;
         int timeId = 0;
         static string msg = "";
         string sp = "";
 
+#nullable enable
         [HttpGet]
         public IActionResult Index()
         {
-            var OnlineList = TempData["id"];
-            if (OnlineList != null)
+           
+            ZoomId = Convert.ToInt32(TempData["id"]);
+           if (ZoomId== 0)          
             {
-                ZoomId = Convert.ToInt32(OnlineList);
+                ZoomId = 0;
             }
+            
+
             var doViewmodel = new DoViewModel()
             {
                 DOWModel = PopulateDOW(),
@@ -47,15 +53,16 @@ namespace DeigCrud.Controllers
                 switch (TempData["sender"])
                 {
                     case "U":
-                        ViewBag.Result = $"Meeting id:  {ZoomId} has been updated.";
+                        ViewBag.Result = $"Zoom Id:  {ZoomId} has been updated.";
                         break;
                     case "C":
-                        ViewBag.Result = $"Meeting id:  {ZoomId} has been created.";
+                        ViewBag.Result = $"Zoom Id:  {ZoomId} has been created.";
                         break;
                     case "D":
-                        ViewBag.Result = $"Meeting id:  {ZoomId} has been deleted.";
+                        ViewBag.Result = $"Zoom Id:  { ZoomId} has been deleted.";
                         break;
                     default:
+                        ViewBag.Result = $"Zoom Id:  { ZoomId} has been ???";
                         break;
                 }
                 //ViewBag.Result = $"Meeting id:  {listId} has been updated.";
@@ -120,7 +127,7 @@ namespace DeigCrud.Controllers
                 OnlineListModel = PopulateOnlineList(ZoomId, dayId, timeId)
             };
 
-            ViewBag.Result = "Update online meeting with the id:" + ZoomId.ToString();
+            ViewBag.Result = $"To update online meeting id: {ZoomId.ToString()}";
             TempData["id"] = ZoomId;
             return View("Update", domodel);   //  Update a meeting: " + id.ToString();
         }
@@ -132,7 +139,9 @@ namespace DeigCrud.Controllers
             int id = Convert.ToInt32(TempData["id"]);
             string rc = UpdateOnlineList(dol, id, SPUPATE);
 
+            ViewBag.Result = $"Updated online meeting id: {id.ToString()}";
             TempData["id"] = id;
+            TempData["sender"] = UPDATE;
             return RedirectToAction("Index");
         }
 
@@ -148,7 +157,8 @@ namespace DeigCrud.Controllers
             };
 
             TempData["id"] = ZoomId;
-            //  TempData["sender"] = UPDATE;
+            ViewBag.Message = $"ZoomId: {ZoomId.ToString()} is staged for delete.";
+            TempData["sender"] = UPDATE;
             return View("Delete", domodel);   //  Update a meeting: " + id.ToString();
         }
 
@@ -156,45 +166,34 @@ namespace DeigCrud.Controllers
         [HttpPost]
         public IActionResult Delete()
         {
-            string strId = TempData["id"].ToString();
-            if (!String.IsNullOrEmpty(strId))
+            int ZoomId = Convert.ToInt32(TempData["id"]);
+            if (ZoomId > 0)
             {
-                ZoomId = Convert.ToInt32(strId);
+                //ZoomId = Convert.ToInt32(strId);
+                string rc = DeleteFunction(ZoomId);
+                TempData["id"] = ZoomId;
+                TempData["sender"] = DELETE;
             }
             else
             {
                 // ViewBag error msg
+                ZoomId = 0;
                 return View();
             }
 
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                SqlCommand cmd = new SqlCommand(SPDELETE, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-                //todo: Finish this code
-                SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
-                zoomid.Value = ZoomId;
+            return RedirectToAction("Index");
+        }
 
-                connection.Open();
+        [HttpPost]
+        [Route("Cancel")]
+        public IActionResult Cancel()
+        {
 
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (SqlException ex)
-                {
-                    msg = $" spOnlineDelete{ex.Message.ToString()}";
-                }
-                finally
-                {
-                    connection.Close();
-                }
-                // Set this to null or Index will not display data.
-                // ViewBag.Result = "The meeting with the id: " + listId.ToString() + " is staged to be deleted";
-                TempData["id"] = ZoomId;
-                TempData["sender"] = DELETE;
-                return RedirectToAction("Index");
-            }
+           ViewBag.Message = "Cancel delete request: ";
+           TempData["id"] = "0";
+          
+            return RedirectToAction("Index");
+
         }
 
             /*   Helper functions  */
@@ -409,7 +408,7 @@ namespace DeigCrud.Controllers
         // Populate the online list
         private static List<OnlineMeetingsModel> PopulateOnlineList(int? ZoomId, int? DayId, int? TimeId)
         {
-            List<OnlineMeetingsModel>onlineList = new List<OnlineMeetingsModel>();
+            List<OnlineMeetingsModel> onlineList = new List<OnlineMeetingsModel>();
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
@@ -421,9 +420,10 @@ namespace DeigCrud.Controllers
                 // Add Parms
                 // ZoomtId
                 SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
-                if (ZoomId == 0)
+                if (ZoomId == 0 || ZoomId == null)
                 {
                     zoomid.Value = null;
+                    ZoomId = 0;
                 }
                 else
                 {
@@ -432,9 +432,10 @@ namespace DeigCrud.Controllers
 
                 // DayId
                 SqlParameter dayid = cmd.Parameters.Add("@DayId", SqlDbType.Int);
-                if (DayId == 0)
+                if (DayId == 0  || DayId == 8)
                 {
                     dayid.Value = null;
+                    DayId = 0;
                 }
                 else
                 {
@@ -467,8 +468,8 @@ namespace DeigCrud.Controllers
                             ol.meetingid = Convert.ToString(dr["meetingid"]);
                             // "password" is not allowed for it throws an out of range exception.
                             ol.pswd = Convert.ToString(dr["pswd"]);
-                            ol.telephone = Convert.ToString(dr["telephone"]);                            
-                            ol.groupname= Convert.ToString(dr["groupname"]);
+                            ol.telephone = Convert.ToString(dr["telephone"]);
+                            ol.groupname = Convert.ToString(dr["groupname"]);
                             ol.notes = Convert.ToString(dr["notes"]);
 
                             onlineList.Add(ol);
@@ -485,5 +486,37 @@ namespace DeigCrud.Controllers
             }
         }
 
+        // Delete function
+        private static string DeleteFunction(int ZoomId)
+        {
+
+
+
+            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+            {
+                SqlCommand cmd = new SqlCommand(SPDELETE, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                //todo: Finish this code
+                SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
+                zoomid.Value = ZoomId;
+
+                connection.Open();
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    msg = $" spOnlineDelete{ex.Message.ToString()}";
+                }
+                finally
+                {
+                    connection.Close();
+                }                
+            }
+
+            return DELETE;
+        }
     }
 }
