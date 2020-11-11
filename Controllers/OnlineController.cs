@@ -218,7 +218,8 @@ namespace DeigCrud.Controllers
         }
 
         [HttpPost]
-        [Route("Cancel")]
+       // [Route("Cancel")]
+       [Route("[controller]/Cancel")]
         public IActionResult Cancel()
         {
 

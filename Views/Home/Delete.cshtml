@@ -15,7 +15,8 @@
 </head>
 <body>
     <h1>Delete Page</h1>
-    <form asp-controller="Home" method="post" role="form">
+    <!-- <form asp-controller="Home" method="post" role="form"> -->
+    <form  asp-controller="Home" method="post">
         <main role="main" class="pb-3">
             <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
             <!-- meeting list here-->
@@ -47,52 +48,26 @@
                             <!-- Begin of table -->
                             <tr>
                                 <td>@m.ListID</td>
-                                <td>
-                                    @m.suspend
-
-                                </td>
-                                <td>
-                                    @m.Day
-
-                                </td>
-                                <td>
-                                    @m.Time
-
-                                </td>
-                                <td>
-                                    @m.Town
-
-                                </td>
-                                <td>
-                                    @m.GroupName
-
-                                </td>
-                                <td>
-                                    @m.Information
-
-                                </td>
-                                <td>
-                                    @m.Location
-
-                                </td>
-                                <td>
-                                    @m.Type
-
-                                </td>
+                                <td>@m.suspend</td>
+                                <td>@m.Day</td>
+                                <td>@m.Time</td>
+                                <td>@m.Town</td>
+                                <td>@m.GroupName</td>
+                                <td>@m.Information</td>
+                                <td>@m.Location</td>
+                                <td>@m.Type</td>
                                 <td>
                                     <div class="text-center panel-body">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        <input type="submit" value="Delete" asp-controller="Home" asp-action="Delete" class="btn btn-sm btn-danger" />
+                                        <input type="submit" value="Cancel" asp-controller="Home" asp-action="Cancel" class="btn btn-sm btn-secondary" />
                                     </div>
                                 </td>
                             </tr>
                         }
                     }
                 </tbody>
-            </table>
-            <hr />
-            <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
-            <hr />
-            <h2>@ViewBag.Result</h2>
+            </table>           
+            <h3>@ViewBag.Result</h3>
         </main>
     </form>
 </body>

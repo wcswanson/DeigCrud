@@ -45,7 +45,7 @@ namespace DeigCrud
             app.UseStaticFiles();
 
             app.UseRouting();
-
+          
             app.UseEndpoints(endpoints =>
             {
                 // Modified

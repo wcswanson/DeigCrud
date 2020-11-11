@@ -88,6 +88,8 @@ namespace DeigCrud.Controllers
             }
 
             dlmodel.SuspendSelect = "0";
+
+            ViewBag.Message = TempData["Message"];
             
             return View(dlmodel);
         }
@@ -161,8 +163,7 @@ namespace DeigCrud.Controllers
             TempData["id"] = listId;
             return View ("Update", dlmodel);   //  Update a meeting: " + id.ToString();
         }
-
-        // Update Post
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update (DlViewModel dlModel)
@@ -239,6 +240,16 @@ namespace DeigCrud.Controllers
                 TempData["sender"] = DELETE;
                 return RedirectToAction("Index");
             }
+        }
+
+        [HttpPost]
+        [Route("[controller]/Cancel")]
+        public IActionResult Cancel()
+        {            
+           TempData["Message"] = $"Cancel delete request: {TempData["id"].ToString()}";
+            TempData["id"] = "0";
+
+            return RedirectToAction("Index");
         }
 
         // This should go into a separate file
