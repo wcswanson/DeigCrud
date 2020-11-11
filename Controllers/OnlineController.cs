@@ -37,8 +37,7 @@ namespace DeigCrud.Controllers
            if (ZoomId== 0)          
             {
                 ZoomId = 0;
-            }
-            
+            }            
 
             var doViewmodel = new DoViewModel()
             {
@@ -75,6 +74,40 @@ namespace DeigCrud.Controllers
         [HttpPost]
         // [ValidateAntiForgeryToken]
         public IActionResult Index(int? ZoomId, int? DOWSelect, int? TimeSelect)
+        {
+
+            var doViewmodel = new DoViewModel()
+            {
+                DOWModel = PopulateDOW(),
+                TimeModel = PopulateTime(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, DOWSelect, TimeSelect)
+            };
+
+            return View(doViewmodel);
+        }
+
+        // Get Display
+        [HttpGet]        public IActionResult Display()
+        {
+
+            ZoomId = Convert.ToInt32(TempData["id"]);
+            if (ZoomId == 0)
+            {
+                ZoomId = 0;
+            }
+
+            var doViewmodel = new DoViewModel()
+            {
+                DOWModel = PopulateDOW(),
+                TimeModel = PopulateTime(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, dayId, timeId)
+            };
+                        
+            return View(doViewmodel);
+        }
+
+        [HttpPost]
+        public IActionResult Display(int? ZoomId, int? DOWSelect, int? TimeSelect)
         {
 
             var doViewmodel = new DoViewModel()
@@ -444,7 +477,7 @@ namespace DeigCrud.Controllers
 
                 // TimeId
                 SqlParameter timeid = cmd.Parameters.Add("@TimeId", SqlDbType.Int);
-                if (DayId == 0)
+                if (TimeId == 0)
                 {
                     timeid.Value = null;
                 }
