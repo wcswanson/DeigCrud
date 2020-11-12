@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 // using DeigCrud.Models;
@@ -26,6 +27,7 @@ namespace DeigCrud.Models
 
         // To get the rest of the online meeting data:
         public int zoomidSelect { get; set; }
+        [DisplayFormat(DataFormatString = "{####-###-###}", ApplyFormatInEditMode = true)]
         public string meetingidSelect{ get; set; }
         public string pswdSelect { get; set; }
         public string telephoneSelect { get; set; }

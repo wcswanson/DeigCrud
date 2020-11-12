@@ -217,8 +217,7 @@ namespace DeigCrud.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-       // [Route("Cancel")]
+       [HttpPost]     
        [Route("[controller]/Cancel")]
         public IActionResult Cancel()
         {
@@ -475,7 +474,7 @@ namespace DeigCrud.Controllers
                 {
                     dayid.Value = DayId;
                 }
-
+                
                 // TimeId
                 SqlParameter timeid = cmd.Parameters.Add("@TimeId", SqlDbType.Int);
                 if (TimeId == 0)

@@ -31,13 +31,13 @@
                     <input asp-for="groupnameSelect" class="form-control" />
                 </td>
                 <td>
-                    <input asp-for="meetingidSelect" class="form-control" />
+                    <input asp-for="meetingidSelect" asp-format="meetingidSelect" class="form-control" />
                 </td>
                 <td>
-                    <input asp-for="pswdSelect" class="form-control" />
+                    <input asp-for="pswdSelect" asp-format="{###-###}" class="form-control" />
                 </td>
                 <td>
-                    <input asp-for="telephoneSelect" class="form-control" />
+                    <input asp-for="telephoneSelect"  asp-format="{(###)-###-####}" class="form-control" />
                 </td>
                 <td>
                     <input asp-for="notesSelect" class="form-control" />
