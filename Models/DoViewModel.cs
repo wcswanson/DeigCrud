@@ -26,8 +26,7 @@ namespace DeigCrud.Models
         public IEnumerable<SelectListItem> TimeModel { get; set; }
 
         // To get the rest of the online meeting data:
-        public int zoomidSelect { get; set; }
-        [DisplayFormat(DataFormatString = "{####-###-###}", ApplyFormatInEditMode = true)]
+        public int zoomidSelect { get; set; }        
         public string meetingidSelect{ get; set; }
         public string pswdSelect { get; set; }
         public string telephoneSelect { get; set; }
