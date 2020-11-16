@@ -1,87 +1,91 @@
 ﻿@model DeigCrud.Models.DoViewModel
 
-<h1>Home Page for Online Meetings Updates</h1>
-<h3>@ViewBag.Result</h3>
-<form asp-controller="Online" method="post" role="form">
-    <main role="main" class="pb-3">
-        <div class="form-inline">           
-            <div class="form-group">
-                <div class="col-sm-2">
-                    <label class="control-label">Day</label>
-                    <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
-                        <option value="8">All</option>
-                    </select>
-                </div>
-            </div>
+    <div class="container-fluid container">
+        <h1>Online Meetings Updates</h1>
+        <h3>@ViewBag.Result</h3>
+        <form asp-controller="Online" method="post" role="form">
+            <main role="main" class="pb-3">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            <label class="control-label">Day</label>
+                            <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                <option value="8">All</option>
+                            </select>
+                        </div>
+                    </div>
 
-            <!-- Time of Day -->
-            <div class="form-group">
-                <div class="col-sm-3">
-                    <label class="control-label">Time</label>
-                    <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
-                        <option value="-">All</option>
-                    </select>
+                    <!-- Time of Day -->
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label">Time</label>
+                            <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                                <option value="-">All</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <input id="Submit1" type="submit" value="Get Selection" />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                    <input id="Submit1" type="submit" value="Get Selection" />
+                <br />
+                <div class="form-inline">
+                    <div class="form-group">
+                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+                            <a asp-action="Create" class="btn btn-group-sm btn-secondary">Add Online</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+                            <a asp-controller="Physical" asp-action="Index" class="btn btn-sm btn-secondary">List Meetings</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="form-inline">
-            <div class="form-group">
-                <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
-                    <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-secondary">List Meetings</a>
-                </div>
-            </div>
-        </div>
-        <!-- meeting list here-->
-        <table class="table table-bordered table-sm table-striped">
-            <thead>
-                <tr>
-                    <th>Zoom Id</th>                    
-                    <th>Day</th>                    
-                    <th>Time</th>
-                    <th>Group Name</th>
-                    <th>Meeting Id</th>
-                    <th>Password</th>
-                    <th>Telephone</th>
-                    <th>Notes</th>
-                    <th>Update : Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.OnlineListModel == null)
-                {
-                    <tr><td colspan="8" class="text-center">No Meeting Lsit for that selection</td></tr>
-                }
-                else
-                {
-                    @foreach (var m in Model.OnlineListModel)
-                    {
+                <br />
+                <!-- meeting list here-->
+                <table class="table table-bordered table-sm table-striped">
+                    <thead>
                         <tr>
-                            <td>@m.zoomid</td>                            
-                            <td>@m.day</td>                            
-                            <td>@m.time</td>
-                            <td>@m.groupname</td>
-                            <td>@m.meetingid</td>
-                            <td>@m.pswd</td>
-                            <td>@m.telephone</td>
-                            <td>@m.notes</td>
-                            <td>
-                                <a asp-action="Update" class="btn btn-sm btn-link" asp-route-id="@m.zoomid">Update</a>
-                                <a asp-action="Delete" class="btn btn-sm btn-link" asp-route-id="@m.zoomid">Delete</a>
-                            </td>
+                            <th>Zoom Id</th>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Group Name</th>
+                            <th>Meeting Id</th>
+                            <th>Password</th>
+                            <th>Telephone</th>
+                            <th>Notes</th>
+                            <th>Update : Delete</th>
                         </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </main>
-</form>
+                    </thead>
+                    <tbody>
+                        @if (Model.OnlineListModel == null)
+                        {
+                            <tr><td colspan="8" class="text-center">No Meeting Lsit for that selection</td></tr>
+                        }
+                        else
+                        {
+                            @foreach (var m in Model.OnlineListModel)
+                            {
+                                <tr>
+                                    <td>@m.zoomid</td>
+                                    <td>@m.day</td>
+                                    <td>@m.time</td>
+                                    <td>@m.groupname</td>
+                                    <td>@m.meetingid</td>
+                                    <td>@m.pswd</td>
+                                    <td>@m.telephone</td>
+                                    <td>@m.notes</td>
+                                    <td>
+                                        <a asp-action="Update" class="btn btn-sm btn-link" asp-route-id="@m.zoomid">Update</a>
+                                        <a asp-action="Delete" class="btn btn-sm btn-link" asp-route-id="@m.zoomid">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </main>
+        </form>
+    </div>

@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DeigCrud.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using DeigCrud.IdentityPolicy;
 
 namespace DeigCrud
 {
@@ -23,6 +27,18 @@ namespace DeigCrud
         {
             // Added
             cnstr = Configuration.GetConnectionString("cnStr");
+
+            services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:cnStrIdentity"]));
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+            services.Configure<IdentityOptions>(opts => {
+                opts.User.RequireUniqueEmail = true;
+                opts.Password.RequiredLength =7;
+                opts.Password.RequireNonAlphanumeric = true;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireDigit = true;
+            });
             services.AddControllersWithViews();
         }
 
@@ -45,7 +61,10 @@ namespace DeigCrud
             app.UseStaticFiles();
 
             app.UseRouting();
-          
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 // Modified

@@ -32,7 +32,7 @@ namespace DeigCrud.Controllers
     //todo: Add loogging to a file.
     //todo: Check for vars floating around that have values that can cause a crash.
 
-    public class HomeController : Controller
+    public class PhysicalController : Controller
     {       
         // 0 might be better as -1 for the int values
         const string SPUPATE = "spUpdateList";
