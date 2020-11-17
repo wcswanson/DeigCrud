@@ -19,6 +19,12 @@ namespace DeigCrud.Controllers
             userManager = userMgr;
             signInManager = signinMgr;
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             return View();

@@ -17,8 +17,7 @@ namespace DeigCrud.Controllers
         {
             userManager = userMgr;
         }
-        [Authorize]
-        [Authorize]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index()
         {
             AppUser user = await userManager.GetUserAsync(HttpContext.User);

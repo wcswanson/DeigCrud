@@ -83,6 +83,7 @@ namespace DeigCrud.Controllers
                         ViewBag.Result = $"Meeting id:  {listId} has been deleted.";
                         break;
                     default:
+                        ViewBag.Result = "";
                         break;
                 }
                 //ViewBag.Result = $"Meeting id:  {listId} has been updated.";
