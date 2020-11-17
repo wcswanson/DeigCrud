@@ -1,9 +1,20 @@
 ﻿@model string
 
-<h1 class="bg-info text-white">Index</h1>
-@Model
-<br />
-<br />
-<h2><a herf="">Link to physical meetings</a></h2>
-<h2><a herf="">Link to online meetings</a></h2>
+<div class="container-fluid container">
+    <h1 class="bg-info text-white">Index</h1>
+    @Model
+    &nbsp;
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
+        <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Logout</a>
+    }
+    <br />
+    <br />
+    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+        <a asp-controller="OnLine" asp-action="Index" class="btn btn-sm btn-secondary">Online Meetings</a>
+    </div>&nbsp;&nbsp;
+    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+        <a asp-controller="Physical" asp-action="Index" class="btn btn-sm btn-secondary">Physical Meetings</a>
+    </div>
+</div>
 

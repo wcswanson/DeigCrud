@@ -39,6 +39,18 @@ namespace DeigCrud
                 opts.Password.RequireUppercase = true;
                 opts.Password.RequireDigit = true;
             });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".AspNetCore.Identity.Application";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+            });
+
+            // Default url: https://localhost:44316/Account/Login?ReturnUrl=%2F
+            // Use this to over ride the default path for no login
+            // https://localhost:44316/Authenticate/Login?ReturnUrl=%2F
+            //services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Authenticate/Login");
             services.AddControllersWithViews();
         }
 

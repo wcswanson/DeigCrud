@@ -1,9 +1,11 @@
-﻿@model DeigCrud.Models.DlViewModel
+﻿@model DlViewModel
 
-<div class="container-fluid container"">
+<div class="container-fluid container">
     <h1>Create A New Meeting</h1>
-    <h2 class="alert-danger">@ViewBag.Result</h2>
+    <h2>@Model.FormResult </h2>
+
     <form asp-controller="Physical" method="post" role="form">
+        <br />
         <table>
             <tr>
                 <td>Suspended</td>
@@ -26,6 +28,7 @@
                     <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
                         <option value="-">Select day</option>
                     </select>
+
                 </td>
                 <td>
                     <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
@@ -57,8 +60,5 @@
             </tr>
         </table>
         <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
-        <hr />
-        <h2>@ViewBag.Result</h2>
     </form>
 </div>
-

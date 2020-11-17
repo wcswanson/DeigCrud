@@ -1,27 +1,32 @@
-﻿@model DoViewModel
- 
+﻿@model DlViewModel
 
-<div class="container-fluid">
-    <h1>Add (create) A New Meeting</h1>
+<div class="container-fluid container"">
+    <h1>Create A New Meeting</h1>
     <h2 class="alert-danger">@ViewBag.Result</h2>
-    <form asp-controller="Online" method="post" role="form">
+    <form asp-controller="Physical" method="post" role="form">
         <table>
             <tr>
+                <td>Suspended</td>
                 <td>Day</td>
                 <td>Time</td>
+                <td>Town</td>
                 <td>Group Name</td>
-                <td>Meeting ID</td>
-                <td>Password</td>
-                <td>Telephone</td>
-                <td>Type / Notes</td>
+                <td>Information</td>
+                <td>Location</td>
+                <td>Type</td>
                 <td>Create</td>
             </tr>
             <tr>
-
+                <td>
+                    <select asp-for="SuspendSelect" asp-items="@Model.Suspended">
+                        <option value="0">False</option>
+                    </select>                   
+                </td>
                 <td>
                     <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
                         <option value="-">Select day</option>
                     </select>
+
                 </td>
                 <td>
                     <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
@@ -29,19 +34,21 @@
                     </select>
                 </td>
                 <td>
-                    <input asp-for="groupnameSelect" class="form-control" />
+                    <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
+                        <option value="-">Select Town</option>
+                    </select>
                 </td>
                 <td>
-                    <input asp-for="meetingidSelect" class="form-control " />
+                    <input asp-for="GroupNameSelect" class="form-control" />
                 </td>
                 <td>
-                    <input asp-for="pswdSelect" asp-format="{###-###}" class="form-control" />
+                    <input asp-for="InformationSelect" class="form-control" />
                 </td>
                 <td>
-                    <input asp-for="telephoneSelect"  asp-format="{(###)-###-####}" class="form-control" />
+                    <input asp-for="LocationSelect" class="form-control" />
                 </td>
                 <td>
-                    <input asp-for="notesSelect" class="form-control" />
+                    <input asp-for="TypeSelect" class="form-control" />
                 </td>
                 <td>
                     <div class="text-center panel-body">
@@ -52,6 +59,7 @@
         </table>
         <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
         <hr />
-        <h3>@ViewBag.Result</h3>
+        <h2>@ViewBag.Result</h2>
     </form>
-</div> 
+</div>
+

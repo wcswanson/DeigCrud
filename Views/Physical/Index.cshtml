@@ -1,8 +1,8 @@
-﻿@model DeigCrud.Models.DlViewModel
+﻿@model DlViewModel
 
 <div class="container-fluid container">
     <h1>Physical Meeting Maintenance</h1>
-    <h2>@Model.FormResult </h2>
+    <h3>@ViewBag.Result</h3>
     <h3>@ViewBag.Message</h3>
     <form asp-controller="Physical" method="post" role="form">
         <main role="main" class="pb-3">
