@@ -1,2 +1,6 @@
 ﻿<h2 class="bg-danger mb-1 p-2 text-white">Access Denied</h2>
-<a asp-action="Login" asp-controller="Account" class="btn btn-primary">OK</a>
+<a asp-action="Login" asp-controller="Account" class="btn btn-primary">OK</a>&nbsp;
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Logout</a>
+}

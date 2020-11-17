@@ -5,11 +5,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using DeigCrud.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DeigCrud.Controllers
 {
+    [Authorize(Roles = "Admin, List")]
     public class OnlineController : Controller
     {
         const string SPUPATE = "spUpdateOnlineList";
@@ -28,6 +30,7 @@ namespace DeigCrud.Controllers
         static string msg = "";
         string sp = "";
 
+       
 #nullable enable
         [HttpGet]
         public IActionResult Index()

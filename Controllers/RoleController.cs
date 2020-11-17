@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using DeigCrud.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeigCrud.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private RoleManager<IdentityRole> roleManager;

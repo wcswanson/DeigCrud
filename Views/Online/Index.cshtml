@@ -41,7 +41,11 @@
                         <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
                             <a asp-controller="Physical" asp-action="Index" class="btn btn-sm btn-secondary">List Meetings</a>
                         </div>
-                    </div>
+                    </div>&nbsp;
+                    @if (User?.Identity?.IsAuthenticated ?? false)
+                    {
+                        <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Logout</a>
+                    }
                 </div>
                 <br />
                 <!-- meeting list here-->

@@ -98,7 +98,6 @@ C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Dep
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.csproj.CoreCompileInputs.cache
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.MvcApplicationPartsAssemblyInfo.cache
-C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Create.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Update.cshtml.g.cs
@@ -107,9 +106,10 @@ C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\Del
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\Update.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
-C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.csprojAssemblyReference.cache
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\CreateForm.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Role\Create.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Role\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Role\Update.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Account\AccessDenied.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.csprojAssemblyReference.cache

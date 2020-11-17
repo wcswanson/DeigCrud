@@ -1,4 +1,5 @@
 ﻿using DeigCrud.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -33,6 +34,8 @@ namespace DeigCrud.Controllers
     //todo: Check for vars floating around that have values that can cause a crash.
 
     // asp-controller="Physical"
+
+    [Authorize(Roles = "Admin, List")]
     public class PhysicalController : Controller
     {       
         // 0 might be better as -1 for the int values
