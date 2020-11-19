@@ -21,7 +21,10 @@ namespace DeigCrud.Controllers
             userManager = userMrg;
         }
 
-        public ViewResult Index() => View(roleManager.Roles);
+        public ViewResult Index()
+        {
+            return View(roleManager.Roles);
+        }
 
         // Create
         public IActionResult Create() => View();
@@ -48,6 +51,7 @@ namespace DeigCrud.Controllers
             List<AppUser> nonMembers = new List<AppUser>();
             foreach (AppUser user in userManager.Users)
             {
+                // add try cactch
                 var list = await userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
                 list.Add(user);
             }
@@ -65,6 +69,7 @@ namespace DeigCrud.Controllers
             IdentityResult result;
             if (ModelState.IsValid)
             {
+                // add try cactch
                 foreach (string userId in model.AddIds ?? new string[] { })
                 {
                     AppUser user = await userManager.FindByIdAsync(userId);

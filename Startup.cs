@@ -31,6 +31,7 @@ namespace DeigCrud
             services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:cnStrIdentity"]));
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+
             services.Configure<IdentityOptions>(opts => {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength =7;

@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
-
 namespace DeigCrud.TagHelpers
 {
     [HtmlTargetElement("td", Attributes = "i-role")]
@@ -14,15 +12,16 @@ namespace DeigCrud.TagHelpers
         private UserManager<AppUser> userManager;
         private RoleManager<IdentityRole> roleManager;
 
-        public RoleUsersTH(UserManager<AppUser> usermgr, RoleManager<IdentityRole> rolemgr)
+        public RoleUsersTH(UserManager<AppUser> usermgr, RoleManager<IdentityRole> roleMgr, UserManager<AppUser> userMgr)
         {
-            userManager = usermgr;
-            roleManager = rolemgr;
+            userManager = userMgr;
+            roleManager = roleMgr;
         }
 
         [HtmlAttributeName("i-role")]
         public string Role { get; set; }
 
+        // This fills in the code for users
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             List<string> names = new List<string>();
