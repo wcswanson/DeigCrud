@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Net;
 using System.Text;
 
 namespace DeigCrud.Controllers
@@ -37,14 +36,14 @@ namespace DeigCrud.Controllers
 
     [Authorize(Roles = "Admin, List")]
     public class PhysicalController : Controller
-    {       
+    {
         // 0 might be better as -1 for the int values
         const string SPUPATE = "spUpdateList";
         const string SPCREATE = "spCreateList";
         const string SPDELETE = "spDeleteList";
         const string UPDATE = "U";
         const string CREATE = "C";
-        const string DELETE = "D";           
+        const string DELETE = "D";
 
         int listId = 0;
         char b = 'a';
@@ -53,7 +52,7 @@ namespace DeigCrud.Controllers
         string town = "";
         static string msg = "";
         string sp = "";
-        
+
         //private Stream fileStream;
 
         public IActionResult Index()
@@ -95,7 +94,7 @@ namespace DeigCrud.Controllers
             dlmodel.SuspendSelect = "0";
 
             ViewBag.Message = TempData["Message"];
-            
+
             return View(dlmodel);
         }
 
@@ -144,7 +143,7 @@ namespace DeigCrud.Controllers
             //todo: redirect to index to display the new record with ListId
             //todo: z Create page -- add vars containers
 
-           string rc = UpdateList(dl, listId, SPCREATE);
+            string rc = UpdateList(dl, listId, SPCREATE);
 
             // Int or string?           
             TempData["id"] = Convert.ToInt32(rc);
@@ -152,8 +151,8 @@ namespace DeigCrud.Controllers
             return RedirectToAction("Index");
         }
 
-       // [ValidateAntiForgeryToken]
-        public IActionResult Update(int id )
+        // [ValidateAntiForgeryToken]
+        public IActionResult Update(int id)
         {
             listId = id;
             var dlmodel = new DlViewModel()
@@ -161,27 +160,27 @@ namespace DeigCrud.Controllers
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b,dayId, timeId, town, sp)
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
             };
 
             ViewBag.Result = "Update meeting with the id:" + listId.ToString();
             TempData["id"] = listId;
-            return View ("Update", dlmodel);   //  Update a meeting: " + id.ToString();
+            return View("Update", dlmodel);   //  Update a meeting: " + id.ToString();
         }
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update (DlViewModel dlModel)
+        public IActionResult Update(DlViewModel dlModel)
         {
             int id = Convert.ToInt32(TempData["id"]);
             string rc = UpdateList(dlModel, id, SPUPATE);
 
-            TempData["id"] =  id;
+            TempData["id"] = id;
             return RedirectToAction("Index");
         }
 
         //  Delete get
-       // [ValidateAntiForgeryToken]
+        // [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             listId = id;
@@ -194,7 +193,7 @@ namespace DeigCrud.Controllers
             };
 
             TempData["id"] = listId;
-          //  TempData["sender"] = UPDATE;
+            //  TempData["sender"] = UPDATE;
             return View("Delete", dlmodel);   //  Update a meeting: " + id.ToString();
         }
 
@@ -215,7 +214,7 @@ namespace DeigCrud.Controllers
             }
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {                
+            {
                 SqlCommand cmd = new SqlCommand(SPDELETE, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 //todo: Finish this code
@@ -228,19 +227,19 @@ namespace DeigCrud.Controllers
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch(SqlException ex)
+                catch (SqlException ex)
                 {
-                   msg = $" spDelete{ex.Message.ToString()}";
+                    msg = $" spDelete{ex.Message.ToString()}";
                 }
                 finally
                 {
                     connection.Close();
                 }
-                
-              
+
+
 
                 // Set this to null or Index will not display data.
-               // ViewBag.Result = "The meeting with the id: " + listId.ToString() + " is staged to be deleted";
+                // ViewBag.Result = "The meeting with the id: " + listId.ToString() + " is staged to be deleted";
                 TempData["id"] = listId;
                 TempData["sender"] = DELETE;
                 return RedirectToAction("Index");
@@ -250,8 +249,8 @@ namespace DeigCrud.Controllers
         [HttpPost]
         [Route("[controller]/Cancel")]
         public IActionResult Cancel()
-        {            
-           TempData["Message"] = $"Cancel delete request: {TempData["id"].ToString()}";
+        {
+            TempData["Message"] = $"Cancel delete request: {TempData["id"].ToString()}";
             TempData["id"] = "0";
 
             return RedirectToAction("Index");
@@ -285,13 +284,13 @@ namespace DeigCrud.Controllers
                     }
                     catch (SqlException ex)
                     {
-                        msg = msg + $" spTowns: {ex.Message.ToString()}" ;
+                        msg = msg + $" spTowns: {ex.Message.ToString()}";
                     }
                     finally
                     {
                         connection.Close();
                     }
-                }               
+                }
             }
             return items;
         }
@@ -396,7 +395,7 @@ namespace DeigCrud.Controllers
                 // Add Parms
                 // ListId
                 SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
-                if ( listId == 0)
+                if (listId == 0)
                 {
                     listid.Value = null;
                 }
@@ -489,31 +488,31 @@ namespace DeigCrud.Controllers
 
 #nullable enable
         // Update List
-        public static string UpdateList(DlViewModel dl,int id, string sp)  // Remove sp from signature?
+        public static string UpdateList(DlViewModel dl, int id, string sp)  // Remove sp from signature?
         {
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
                 string sql = sp;    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
-               
+
                 // Add Parms
                 // ListId
                 if (sp == SPUPATE)
                 {
                     SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
                     if (id == 0)
-                    {                        
+                    {
                         listid.Value = null;
                     }
                     else
-                    {                        
+                    {
                         listid.Value = id;
                     }
                 }
                 else
                 {
-                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;                  
+                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;
                 }
 
                 // Suspend
@@ -522,11 +521,11 @@ namespace DeigCrud.Controllers
                 {
                     bsuspend.Value = true;
                 }
-                else 
+                else
                 {
                     bsuspend.Value = false;
                 }
-               
+
                 //DOW(day of week id)
                 int dow = Convert.ToInt32(dl.DOWSelect);
                 SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);
@@ -553,10 +552,10 @@ namespace DeigCrud.Controllers
                 }
 
                 // Town
-                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);              
+                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);
                 if (String.IsNullOrEmpty(dl.TownSelect))
                 {
-                     townname.Value = "";
+                    townname.Value = "";
                 }
                 else
                 {
@@ -565,7 +564,7 @@ namespace DeigCrud.Controllers
 
                 // Group Name
                 SqlParameter groupname = cmd.Parameters.Add("@GroupName", SqlDbType.NVarChar);
-                if (String.IsNullOrEmpty(dl.GroupNameSelect))                    
+                if (String.IsNullOrEmpty(dl.GroupNameSelect))
                 {
                     groupname.Value = "";
                 }
@@ -576,8 +575,8 @@ namespace DeigCrud.Controllers
 
                 // Informantion
                 SqlParameter information = cmd.Parameters.Add("@Information", SqlDbType.NVarChar);
-               if (String.IsNullOrEmpty(dl.InformationSelect))
-                    {
+                if (String.IsNullOrEmpty(dl.InformationSelect))
+                {
                     information.Value = "";
                 }
                 else
@@ -586,9 +585,9 @@ namespace DeigCrud.Controllers
                 }
 
                 // Location
-                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.NVarChar);               
-               if (String.IsNullOrEmpty(dl.LocationSelect))
-                    {
+                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.NVarChar);
+                if (String.IsNullOrEmpty(dl.LocationSelect))
+                {
                     location.Value = "";
                 }
                 else
@@ -598,7 +597,7 @@ namespace DeigCrud.Controllers
 
                 // Type
                 SqlParameter type = cmd.Parameters.Add("@Type", SqlDbType.NVarChar);
-                if (String.IsNullOrEmpty(dl.TypeSelect))               
+                if (String.IsNullOrEmpty(dl.TypeSelect))
                 {
                     type.Value = "";
                 }
@@ -611,11 +610,11 @@ namespace DeigCrud.Controllers
                 try
                 {
                     cmd.ExecuteNonQuery();
-                    if ( sp == SPCREATE)
+                    if (sp == SPCREATE)
                     {
-                        msg = cmd.Parameters["@new_id"].Value.ToString();                      
-                        
-                    }                   
+                        msg = cmd.Parameters["@new_id"].Value.ToString();
+
+                    }
                 }
                 catch (SqlException ex)
                 {
@@ -625,12 +624,12 @@ namespace DeigCrud.Controllers
                 {
                     connection.Close();
                 }
-               
+
             }
-           
+
             return msg.ToString();
         }
-               
+
 #nullable enable
         private static string ExportMeetingList()
         {

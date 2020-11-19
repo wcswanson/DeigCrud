@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DeigCrud.Models;
+﻿using DeigCrud.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace DeigCrud.Controllers
 {
@@ -36,7 +33,7 @@ namespace DeigCrud.Controllers
                 AppUser appUser = new AppUser
                 {
                     UserName = user.Name,
-                    Email = user.Email                   
+                    Email = user.Email
                 };
 
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
@@ -88,7 +85,7 @@ namespace DeigCrud.Controllers
             }
             else
                 ModelState.AddModelError("", "User Not Found");
-            return View(user);            
+            return View(user);
         }
 
         private void Errors(IdentityResult result)

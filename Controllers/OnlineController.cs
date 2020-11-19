@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using DeigCrud.Models;
+﻿using DeigCrud.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DeigCrud.Controllers
 {
@@ -30,17 +28,17 @@ namespace DeigCrud.Controllers
         static string msg = "";
         string sp = "";
 
-       
+
 #nullable enable
         [HttpGet]
         public IActionResult Index()
         {
-           
+
             ZoomId = Convert.ToInt32(TempData["id"]);
-           if (ZoomId== 0)          
+            if (ZoomId == 0)
             {
                 ZoomId = 0;
-            }            
+            }
 
             var doViewmodel = new DoViewModel()
             {
@@ -90,7 +88,8 @@ namespace DeigCrud.Controllers
         }
 
         // Get Display
-        [HttpGet]        public IActionResult Display()
+        [HttpGet]
+        public IActionResult Display()
         {
 
             ZoomId = Convert.ToInt32(TempData["id"]);
@@ -105,7 +104,7 @@ namespace DeigCrud.Controllers
                 TimeModel = PopulateTime(),
                 OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, dayId, timeId)
             };
-                        
+
             return View(doViewmodel);
         }
 
@@ -220,19 +219,19 @@ namespace DeigCrud.Controllers
             return RedirectToAction("Index");
         }
 
-       [HttpPost]     
-       [Route("[controller]/Cancel")]
+        [HttpPost]
+        [Route("[controller]/Cancel")]
         public IActionResult Cancel()
         {
 
-           ViewBag.Message = "Cancel delete request: ";
-           TempData["id"] = "0";
-          
+            ViewBag.Message = "Cancel delete request: ";
+            TempData["id"] = "0";
+
             return RedirectToAction("Index");
 
         }
 
-            /*   Helper functions  */
+        /*   Helper functions  */
         private static List<SelectListItem> PopulateDOW()
         {
             List<SelectListItem> items = new List<SelectListItem>();
@@ -310,7 +309,7 @@ namespace DeigCrud.Controllers
         /*   Support functions */
 #nullable enable
         // Update List
-        public static string UpdateOnlineList(DoViewModel dol, int id, string sp)  
+        public static string UpdateOnlineList(DoViewModel dol, int id, string sp)
         {
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
@@ -337,7 +336,7 @@ namespace DeigCrud.Controllers
                 {
                     cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;
                 }
-                
+
                 //DOW(day of week id)
                 int dow = Convert.ToInt32(dol.DOWSelect);
                 SqlParameter dowid = cmd.Parameters.Add("@DayId", SqlDbType.Int);
@@ -362,7 +361,7 @@ namespace DeigCrud.Controllers
                 {
                     timeid.Value = 0;
                 }
-                
+
                 // Group Name
                 SqlParameter groupname = cmd.Parameters.Add("@GroupName", SqlDbType.VarChar);
                 if (String.IsNullOrEmpty(dol.groupnameSelect))
@@ -418,7 +417,7 @@ namespace DeigCrud.Controllers
                     notes.Value = dol.notesSelect.ToString();
                 }
 
-                connection.Open();             
+                connection.Open();
 
                 try
                 {
@@ -468,7 +467,7 @@ namespace DeigCrud.Controllers
 
                 // DayId
                 SqlParameter dayid = cmd.Parameters.Add("@DayId", SqlDbType.Int);
-                if (DayId == 0  || DayId == 8)
+                if (DayId == 0 || DayId == 8)
                 {
                     dayid.Value = null;
                     DayId = 0;
@@ -477,7 +476,7 @@ namespace DeigCrud.Controllers
                 {
                     dayid.Value = DayId;
                 }
-                
+
                 // TimeId
                 SqlParameter timeid = cmd.Parameters.Add("@TimeId", SqlDbType.Int);
                 if (TimeId == 0)
@@ -549,7 +548,7 @@ namespace DeigCrud.Controllers
                 finally
                 {
                     connection.Close();
-                }                
+                }
             }
 
             return DELETE;

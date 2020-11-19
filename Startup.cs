@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DeigCrud.IdentityPolicy;
+using DeigCrud.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DeigCrud.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using DeigCrud.IdentityPolicy;
+using System;
 
 namespace DeigCrud
 {
@@ -32,9 +28,10 @@ namespace DeigCrud
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:cnStrIdentity"]));
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 
-            services.Configure<IdentityOptions>(opts => {
+            services.Configure<IdentityOptions>(opts =>
+            {
                 opts.User.RequireUniqueEmail = true;
-                opts.Password.RequiredLength =7;
+                opts.Password.RequiredLength = 7;
                 opts.Password.RequireNonAlphanumeric = true;
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = true;

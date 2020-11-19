@@ -1,14 +1,13 @@
-﻿using System;
+﻿using DeigCrud.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using DeigCrud.Models;
 
-namespace DeigCrud.IdentityPolicy 
+namespace DeigCrud.IdentityPolicy
 {
     public class CustomPasswordPolicy : PasswordValidator<AppUser>
-{
+    {
         public override async Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user, string password)
         {
             IdentityResult result = await base.ValidateAsync(manager, user, password);

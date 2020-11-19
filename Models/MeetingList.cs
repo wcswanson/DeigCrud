@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DeigCrud.Models
 {
     // Use spList_get parms: DOWID, TimeID, Town, Suspend  -- default null
-    
+
     public class MeetingListModel
     {
         [BindProperty]

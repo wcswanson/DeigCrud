@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 
 namespace DeigCrud.Models
@@ -22,7 +21,7 @@ namespace DeigCrud.Models
         public string SuspendSelect { get; set; }
         // Plural
         public List<SelectListItem> Suspended = new List<SelectListItem>
-        {            
+        {
             new SelectListItem { Value = "1", Text = "True" },
             new SelectListItem { Value = "0", Text = "False"  },
         };
@@ -40,7 +39,7 @@ namespace DeigCrud.Models
         public IEnumerable<SelectListItem> TownModel { get; set; }
 
         // Meeting list  use for display but can't receive the content so add *Select vars.      
-       public IEnumerable< MeetingListModel> ListModel { get; set; }       
+        public IEnumerable<MeetingListModel> ListModel { get; set; }
         public string GroupNameSelect { get; set; }
         public string InformationSelect { get; set; }
         public string LocationSelect { get; set; }

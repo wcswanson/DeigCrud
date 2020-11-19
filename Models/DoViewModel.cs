@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-// using DeigCrud.Models;
+﻿// using DeigCrud.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.SignalR;
+using System.Collections.Generic;
 
 namespace DeigCrud.Models
 {
@@ -26,8 +21,8 @@ namespace DeigCrud.Models
         public IEnumerable<SelectListItem> TimeModel { get; set; }
 
         // To get the rest of the online meeting data:
-        public int zoomidSelect { get; set; }        
-        public string meetingidSelect{ get; set; }
+        public int zoomidSelect { get; set; }
+        public string meetingidSelect { get; set; }
         public string pswdSelect { get; set; }
         public string telephoneSelect { get; set; }
         public string groupnameSelect { get; set; }
