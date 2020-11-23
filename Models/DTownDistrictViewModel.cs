@@ -11,10 +11,10 @@ namespace DeigCrud.Models
         public int DistrictSelect { get; set; }
         public IEnumerable<SelectListItem> DistrictModel { get; set; }
 
-        public int TownSelect { get; set; }
+        public int TownIdSelect { get; set; }
         public IEnumerable<SelectListItem> TownModel { get; set; }
 
-        public string TownIdSelect { get;set;}
+        public string TownSelect { get;set;}
         public IEnumerable<TownDistrictModel> DistrictTownModel { get; set; }
     }
 }

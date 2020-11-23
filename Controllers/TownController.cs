@@ -70,29 +70,51 @@ namespace DeigCrud.Controllers
 
         // Create Get 
         [HttpGet]
-        //public IActionResult Create()
-        //{
-        //    var dtdmodel = new DTownDistrictViewModel()
-        //    {
-        //        TownModel = PopulateTowns(),
-        //        DistrictModel = PopulateDistrict(),
+        public IActionResult Create()
+        {
+            var dtdmodel = new DTownDistrictViewModel()
+            {
+                TownModel = PopulateTowns(),
+                DistrictModel = PopulateDistrict(),
 
-        //        DistrictTownModel = PopulateDistrictsTown(TownId, districtnumber, townname)
-        //    };
-   
-        //    return View("Create", dtdmodel);
-        //}
+                DistrictTownModel = PopulateDistrictsTown(TownId, districtnumber, townname)
+            };
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Update(DlViewModel dlModel)
-        //{
-        //    int id = Convert.ToInt32(TempData["id"]);
-        //    string rc = UpdateList(dlModel, id, SPUPATE);
+            return View("Create", dtdmodel);
+        }
 
-        //    TempData["id"] = id;
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(DTownDistrictViewModel dtd)
+        {
+            //todo: Create constants for sp for create and update
+            //todo: Call function, passing in the model, and sp name.
+            //todo: redirect to index to display the new record with ListId
+            //todo: z Create page -- add vars containers
+            string rc = "";
+            if (ModelState.IsValid)
+            {
+                rc = UpdateDistrictTowns(dtd, TownId);
+            }
+
+            // Int or string?           
+            TempData["id"] = Convert.ToInt32(rc);
+            TempData["sender"] = CREATE;
+            return RedirectToAction("Index");
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(DTownDistrictViewModel dtdView)
+        {
+            int id = Convert.ToInt32(TempData["id"]);
+            string rc = UpdateDistrictTowns(dtdView, id);
+
+            TempData["id"] = id;
+            return RedirectToAction("Index");
+        }
 
         // Functions
 
@@ -246,90 +268,90 @@ namespace DeigCrud.Controllers
             return items;
         }
 
-//#nullable enable
-//        public static string UpdateList( DTownDistrictViewModel dtd, int TownId)
-//        {
-//            // If TownId == 0 then it is a insert else update
+#nullable enable
+        public static string UpdateDistrictTowns(DTownDistrictViewModel dtd, int TownId)
+        {
+            // If TownId == 0 then it is a insert else update
 
-//            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-//            {
-//                string sql = "";
-//                if (TownId == 0)
-//                {
-//                    sql = SPCREATE;
-//                }
-//                else
-//                {
-//                    sql = UPDATE;
+            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+            {
+                string sql = "";
+                if (TownId == 0)
+                {
+                    sql = SPCREATE;
+                }
+                else
+                {
+                    sql = UPDATE;
 
-//                }
-//                SqlCommand cmd = new SqlCommand(sql, connection);
-//                cmd.CommandType = CommandType.StoredProcedure;
+                }
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-//                // Town Id
-//                if (sql == SPUPDATE)
-//                {
-//                    SqlParameter townid = cmd.Parameters.Add("@TownId", SqlDbType.Int);
-//                    if (TownId == 0)
-//                    {
-//                        townid.Value = null;
-//                    }
-//                    else
-//                    {
-//                        townid.Value = TownId;
-//                    }
-//                }
-//                else
-//                {
-//                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;
-//                }
+                // Town Id
+                if (sql == SPUPDATE)
+                {
+                    SqlParameter townid = cmd.Parameters.Add("@TownId", SqlDbType.Int);
+                    if (TownId == 0)
+                    {
+                        townid.Value = null;
+                    }
+                    else
+                    {
+                        townid.Value = TownId;
+                    }
+                }
+                else
+                {
+                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;
+                }
 
-//                // Distirct
-//                int districtnumber = Convert.ToInt32(dtd.DistrictSelect);
-//                SqlParameter district = cmd.Parameters.Add("@District", SqlDbType.Int);
+                // Distirct
+                int districtnumber = Convert.ToInt32(dtd.DistrictSelect);
+                SqlParameter district = cmd.Parameters.Add("@District", SqlDbType.Int);
 
-//                if (districtnumber > 0 )
-//                {
-//                    district.Value = (int)districtnumber;
-//                }
-//                else
-//                {
-//                    district.Value = null;
-//                }
+                if (districtnumber > 0)
+                {
+                    district.Value = (int)districtnumber;
+                }
+                else
+                {
+                    district.Value = null;
+                }
 
-//                // Town name
-//                string townname = Convert.ToString(dtd.TownSelect);
-//                SqlParameter town = cmd.Parameters.Add("@Town", SqlDbType.VarChar);
+                // Town name
+                string townname = Convert.ToString(dtd.TownSelect);
+                SqlParameter town = cmd.Parameters.Add("@Town", SqlDbType.VarChar);
 
-//                if (townname == null)
-//                {
-//                    town.Value = null;
-//                }
-//                else
-//                {
-//                    town.Value = townname;
-//                }
+                if (townname == null)
+                {
+                    town.Value = null;
+                }
+                else
+                {
+                    town.Value = townname;
+                }
 
-//                connection.Open();
-//                try
-//                {
-//                    cmd.ExecuteNonQuery();
-//                    if (sql == SPCREATE)
-//                    {
-//                        msg = cmd.Parameters["@new_id"].Value.ToString();
+                connection.Open();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    if (sql == SPCREATE)
+                    {
+                        msg = cmd.Parameters["@new_id"].Value.ToString();
 
-//                    }
-//                }
-//                catch (SqlException ex)
-//                {
-//                    msg = msg + $" {sql}: {ex.Message.ToString()}";
-//                }
-//                finally
-//                {
-//                    connection.Close();
-//                }
-//            }
-//            return "";
-//        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    msg = msg + $" {sql}: {ex.Message.ToString()}";
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return msg;
+        }
     }
 }
