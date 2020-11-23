@@ -26,7 +26,7 @@ namespace DeigCrud.Controllers
         int dayId = 0;
         int timeId = 0;
         static string msg = "";
-        string sp = "";
+        //string sp = "";
 
 
 #nullable enable

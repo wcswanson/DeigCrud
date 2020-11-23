@@ -1,0 +1,91 @@
+﻿@model DTownDistrictViewModel
+
+<div class="container-fluid container">
+
+    <h1>Display Towns</h1>
+    <h3>@ViewBag.Result</h3>
+    <h3>@ViewBag.Message</h3>
+
+    <form asp-controller="Town" method="post" role="form">
+        <main role="main" class="pb-3">
+            <div class="form-inline">
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <label class="control-label">District</label>
+                        <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"));">
+                            <option value="8">All</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Town -->
+                <div class="form-group">
+                    <div class="col-sm-3" id="filter-value-group">
+                        <label class="control-label">Town</label>
+                        <!-- Add Select Town -->
+                        <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
+                            <option value="-">Select Town</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                        <input id="Submit1" type="submit" value="Get Selection" />
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-inline">
+                <div class="form-group">
+                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+                        <a asp-action="Create" class="btn btn-group-sm btn-secondary">Add a New Town</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-4">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-secondary">Return to home</a>
+                    </div>
+                </div>&nbsp;
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Logout</a>
+                }
+            </div>
+            <br />
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Town Id</th>
+                        <th>District</th>                        
+                        <th>Town</th>                       
+                        <th>Update : Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.DistrictTownModel == null)
+                    {
+                        <tr><td colspan="8" class="text-center">No towns for that selection</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var m in Model.DistrictTownModel)
+                        {
+                            <tr>
+                                <td>@m.TownId</td>
+                                <td>@m.District</td>                               
+                                <td>@m.Town</td>                               
+                                <td>
+                                    <a asp-action="Update" class="btn btn-sm btn-link" asp-route-id="@m.TownId">Update</a>
+                                    <a asp-action="Delete" class="btn btn-sm btn-link" asp-route-id="@m.TownId">Delete</a>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+
+        </main>
+    </form>
+
+</div>

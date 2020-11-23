@@ -1,7 +1,7 @@
 ﻿@model DoViewModel
  
 
-<div class="container-fluid">
+<div class="container-fluid container">
     <h1>Add (create) A New Meeting</h1>
     <h2 class="alert-danger">@ViewBag.Result</h2>
     <form asp-controller="Online" method="post" role="form">
@@ -38,7 +38,7 @@
                     <input asp-for="pswdSelect" asp-format="{###-###}" class="form-control" />
                 </td>
                 <td>
-                    <input asp-for="telephoneSelect"  asp-format="{(###)-###-####}" class="form-control" />
+                    <input asp-for="telephoneSelect" asp-format="{(###)-###-####}" class="form-control" />
                 </td>
                 <td>
                     <input asp-for="notesSelect" class="form-control" />

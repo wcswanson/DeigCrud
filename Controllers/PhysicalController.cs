@@ -373,16 +373,7 @@ namespace DeigCrud.Controllers
 #nullable enable
         private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string town, string? sp)  // remove sp?
         {
-            //@ListId int
-            //@Suspend bit
-            //@DOWID int 
-            //@GroupName string
-            //@Information string
-            //@Location string 
-            //@Type = string
-            //@TimeID int,
-            //@Town string
-
+           
             List<MeetingListModel> meetingList = new List<MeetingListModel>();
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {

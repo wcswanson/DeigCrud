@@ -1,7 +1,6 @@
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\appsettings.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\libman.json
-C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\DeigCrud.exe
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\DeigCrud.deps.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\DeigCrud.runtimeconfig.json
@@ -113,3 +112,7 @@ C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\staticwebassets\DeigCrud
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.dll
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.pdb
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.genruntimeconfig.cache
+C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Create.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Index.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Update.cshtml.g.cs
