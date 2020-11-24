@@ -71,7 +71,6 @@ C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcor
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.csprojAssemblyReference.cache
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.AssemblyInfoInputs.cache
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.AssemblyInfo.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.csproj.CoreCompileInputs.cache
@@ -116,3 +115,4 @@ C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Properties\launchSetting
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Create.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Update.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.csprojAssemblyReference.cache

@@ -1,4 +1,61 @@
-﻿<div class="container-fluid container">
-        <h1>Update Towns</h1>
-</div>
+﻿@model DTownDistrictViewModel
 
+<div class="container-fluid container">
+
+    <h1>Update Towns</h1>
+    <h3>@ViewBag.Result</h3>
+    <h3>@ViewBag.Message</h3>
+
+    <form asp-controller="Town" method="post" role="form">
+        <main role="main" class="pb-3">
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Town Id</th>
+                        <th>District</th>
+                        <th>Town</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.DistrictTownModel == null)
+                    {
+                        <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var m in Model.DistrictTownModel)
+                        {
+                            <!-- Begin of table -->
+                            <tr>
+                                <td>@m.TownId</td>
+                                <td>
+                                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"));">
+                                        <option value="@m.District">@m.District</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="TownNameSelect" class="form-control" value="@m.Town" />
+                                    </div>
+                                   
+                                </td>
+                                <td>
+                                    <div class="text-center panel-body">
+                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div class="form-inline">
+                <div class="text-center panel-body">
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+                </div>
+                <hr />                
+            </div>
+        </main>
+    </form>
+</div>

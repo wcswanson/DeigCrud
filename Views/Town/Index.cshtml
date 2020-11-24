@@ -13,7 +13,7 @@
                     <div class="col-sm-2">
                         <label class="control-label">District</label>
                         <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"));">
-                            <option value="8">All</option>
+                            <option value="-1">All</option>
                         </select>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                     <div class="col-sm-3" id="filter-value-group">
                         <label class="control-label">Town</label>
                         <!-- Add Select Town -->
-                        <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
+                        <select asp-for="TownIdSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
                             <option value="-">Select Town</option>
                         </select>
                     </div>
