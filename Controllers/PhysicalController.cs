@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using DeigCrud.Infrastructure;
 
 namespace DeigCrud.Controllers
 {
@@ -41,6 +42,7 @@ namespace DeigCrud.Controllers
         const string SPUPATE = "spUpdateList";
         const string SPCREATE = "spCreateList";
         const string SPDELETE = "spDeleteList";
+        const string SPDISTRICT = "spDistrict";
         const string UPDATE = "U";
         const string CREATE = "C";
         const string DELETE = "D";
@@ -52,6 +54,7 @@ namespace DeigCrud.Controllers
         string town = "";
         static string msg = "";
         string sp = "";
+        int districtNumber = -1;
 
         //private Stream fileStream;
 
@@ -65,10 +68,11 @@ namespace DeigCrud.Controllers
             }
             var dlmodel = new DlViewModel()
             {
+                DistrictModel = HelperFunctions.PopulateDistricts(),
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
 
             if (listId > 0)
@@ -100,7 +104,7 @@ namespace DeigCrud.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(char? SuspendSelect, int? DOWSelect, int? TimeSelect, string TownSelect)
+        public IActionResult Index(char? SuspendSelect, int? DOWSelect, int? TimeSelect, string TownSelect, int? DistrictSelect)
         {
             //todo: code for null vars coming in.
 
@@ -111,10 +115,11 @@ namespace DeigCrud.Controllers
 
             var dlmodel = new DlViewModel()
             {
+                DistrictModel = HelperFunctions.PopulateDistricts(),
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, DOWSelect, TimeSelect, TownSelect, sp)
+                ListModel = PopulateList(listId, b, DOWSelect, TimeSelect, TownSelect, sp, DistrictSelect)
             };
 
             return View(dlmodel);
@@ -125,10 +130,11 @@ namespace DeigCrud.Controllers
         {
             var dlmodel = new DlViewModel()
             {
+                DistrictModel = HelperFunctions.PopulateDistricts(),
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
             return View("Create", dlmodel);
         }
@@ -157,13 +163,14 @@ namespace DeigCrud.Controllers
             listId = id;
             var dlmodel = new DlViewModel()
             {
+                DistrictModel = HelperFunctions.PopulateDistricts(),
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
 
-            ViewBag.Result = "Update meeting with the id:" + listId.ToString();
+            ViewBag.Result = $"Update meeting with the id: {listId.ToString()}";
             TempData["id"] = listId;
             return View("Update", dlmodel);   //  Update a meeting: " + id.ToString();
         }
@@ -186,10 +193,11 @@ namespace DeigCrud.Controllers
             listId = id;
             var dlmodel = new DlViewModel()
             {
+                DistrictModel = HelperFunctions.PopulateDistricts(),
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp)
+                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
 
             TempData["id"] = listId;
@@ -257,6 +265,42 @@ namespace DeigCrud.Controllers
         }
 
         // This should go into a separate file
+        //private static List<SelectListItem> PopulateDistricts()
+        //{
+        //    List<SelectListItem> items = new List<SelectListItem>();
+
+        //    using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+        //    {
+        //        connection.Open();
+
+        //        SqlCommand cmd = new SqlCommand(SPDISTRICT, connection);
+        //        cmd.CommandType = CommandType.StoredProcedure;
+
+        //        using (SqlDataReader dr = cmd.ExecuteReader())
+        //        {
+        //            try
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    items.Add(new SelectListItem
+        //                    {
+        //                        Value = dr["District"].ToString(),
+        //                        Text = dr["District"].ToString()
+        //                    });
+        //                }
+        //            }
+        //            catch (SqlException ex)
+        //            {
+        //                msg = msg + $" {SPDISTRICT}: {ex.Message.ToString()}";
+        //            }
+        //            finally
+        //            {
+        //                connection.Close();
+        //            }
+        //        }
+        //    }
+        //    return items;
+        //}
         private static List<SelectListItem> PopulateTowns()
         {
             List<SelectListItem> items = new List<SelectListItem>();
@@ -371,7 +415,7 @@ namespace DeigCrud.Controllers
         }
 
 #nullable enable
-        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string town, string? sp)  // remove sp?
+        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string town, string? sp, int? districtnumber)  // remove sp?
         {
            
             List<MeetingListModel> meetingList = new List<MeetingListModel>();
@@ -433,6 +477,17 @@ namespace DeigCrud.Controllers
                     timeid.Value = null;
                 }
 
+                // District
+                SqlParameter district = cmd.Parameters.Add("@District", SqlDbType.Int);
+                if (districtnumber > 0)
+                {
+                    district.Value = (int)districtnumber;
+                }
+                else
+                {
+                    district.Value = null;
+                }
+
                 // Town
                 SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);
                 if (town.Length < 4)
@@ -456,6 +511,7 @@ namespace DeigCrud.Controllers
                             ml.Day = Convert.ToString(dr["Day"]);
                             ml.TimeID = Convert.ToInt32(dr["TimeID"]);
                             ml.Time = Convert.ToString(dr["Time"]);
+                            ml.District = Convert.ToInt32(dr["District"]);
                             ml.Town = Convert.ToString(dr["Town"]);
                             ml.GroupName = Convert.ToString(dr["GroupName"]);
                             ml.Information = Convert.ToString(dr["Information"]);
@@ -540,6 +596,18 @@ namespace DeigCrud.Controllers
                 else
                 {
                     timeid.Value = 0;
+                }
+
+                // District
+                int districtnumber = Convert.ToInt32(dl.DistrictSelect);
+                SqlParameter district = cmd.Parameters.Add("@District", SqlDbType.Int);
+                if (districtnumber > 0 )
+                {
+                    district.Value = (int)districtnumber;
+                }
+                else
+                {
+                    district.Value = 0;
                 }
 
                 // Town

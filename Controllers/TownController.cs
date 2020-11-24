@@ -42,7 +42,7 @@ namespace DeigCrud.Controllers
             var dtdmodel = new DTownDistrictViewModel()
             {
                 TownModel = PopulateTowns(),
-                DistrictModel = PopulateDistrict(),
+                DistrictModel = PopulateDistricts(),
 
                 DistrictTownModel = PopulateDistrictsTown(TownId, districtnumber)
             };
@@ -78,7 +78,7 @@ namespace DeigCrud.Controllers
             var dtdmodel = new DTownDistrictViewModel()
             {
                 TownModel = PopulateTowns(),
-                DistrictModel = PopulateDistrict(),
+                DistrictModel = PopulateDistricts(),
 
                 DistrictTownModel = PopulateDistrictsTown(TownIdSelect, DistrictSelect)
             };
@@ -93,7 +93,7 @@ namespace DeigCrud.Controllers
             var dtdmodel = new DTownDistrictViewModel()
             {
                 TownModel = PopulateTowns(),
-                DistrictModel = PopulateDistrict(),
+                DistrictModel = PopulateDistricts(),
 
                 DistrictTownModel = PopulateDistrictsTown(TownId, districtnumber)
             };
@@ -129,7 +129,7 @@ namespace DeigCrud.Controllers
             TownId = id;
             var dtd = new DTownDistrictViewModel()
             {
-                DistrictModel = PopulateDistrict(),
+                DistrictModel = PopulateDistricts(),
                 TownModel = PopulateTowns(),
 
                 DistrictTownModel = PopulateDistrictsTown(TownId, districtnumber)
@@ -147,14 +147,14 @@ namespace DeigCrud.Controllers
         {
             int id = Convert.ToInt32(TempData["id"]);
             string rc = UpdateDistrictTowns(dtdView, id, UPDATE);
-
+            
+            TempData["sender"] = DELETE;
             TempData["id"] = id;
             return RedirectToAction("Index");
         }
 
         // Delete
-        [HttpGet]
-        //[ValidateAntiForgeryToken]
+        [HttpGet]       
         public IActionResult Delete(int id)
         {
             
@@ -312,7 +312,7 @@ namespace DeigCrud.Controllers
         }
 
         // Dropdown for districts
-        private static List<SelectListItem> PopulateDistrict()
+        private static List<SelectListItem> PopulateDistricts()
         {
             List<SelectListItem> items = new List<SelectListItem>();
 

@@ -1,14 +1,15 @@
 ﻿@model DlViewModel
 
 <div class="container-fluid container"">
-    <h1>Create A New Meeting</h1>
-    <h2 class="alert-danger">@ViewBag.Result</h2>
+    <h3>Create A New Meeting</h3>
+    <h3 class="alert-danger">@ViewBag.Result</h3>
     <form asp-controller="Physical" method="post" role="form">
         <table>
             <tr>
                 <td>Suspended</td>
                 <td>Day</td>
                 <td>Time</td>
+                <td>District</td>
                 <td>Town</td>
                 <td>Group Name</td>
                 <td>Information</td>
@@ -20,22 +21,27 @@
                 <td>
                     <select asp-for="SuspendSelect" asp-items="@Model.Suspended">
                         <option value="0">False</option>
-                    </select>                   
+                    </select>
                 </td>
                 <td>
                     <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
-                        <option value="-">Select day</option>
+                        <option value="-">-</option>
                     </select>
 
                 </td>
                 <td>
                     <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
-                        <option value="0">Select Time</option>
+                        <option value="0">-</option>
+                    </select>
+                </td>
+                <td>
+                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                        <option value="-1">-</option>
                     </select>
                 </td>
                 <td>
                     <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
-                        <option value="-">Select Town</option>
+                        <option value="-">-</option>
                     </select>
                 </td>
                 <td>

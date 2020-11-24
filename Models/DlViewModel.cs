@@ -34,6 +34,10 @@ namespace DeigCrud.Models
         public string TimeSelect { get; set; }
         public IEnumerable<SelectListItem> TimeModel { get; set; }
 
+        //District
+        public int DistrictSelect { get; set; }
+        public IEnumerable<SelectListItem> DistrictModel { get; set; }
+
         // Towns
         public string TownSelect { get; set; }
         public IEnumerable<SelectListItem> TownModel { get; set; }

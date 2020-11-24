@@ -2,7 +2,7 @@
 
 <div class="container-fluid container">
 
-    <h1>Display Towns</h1>
+    <h3>Display Towns</h3>
     <h3>@ViewBag.Result</h3>
     <h3>@ViewBag.Message</h3>
 
@@ -23,7 +23,7 @@
                         <label class="control-label">Town</label>
                         <!-- Add Select Town -->
                         <select asp-for="TownIdSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
-                            <option value="-">Select Town</option>
+                            <option value="-">All</option>
                         </select>
                     </div>
                 </div>

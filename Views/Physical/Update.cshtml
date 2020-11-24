@@ -1,95 +1,97 @@
 ﻿@model DeigCrud.Models.DlViewModel
 
-    <div class="container-fluid container">
-        <!-- No <form> on page-->
-        <div class="container">
-            <h1>Update</h1>
-            <form asp-controller="Physical" method="post" role="form">
-                <main role="main" class="pb-3">                    
-                    <!-- meeting list here-->
-                    <table class="table table-bordered table-sm table-striped">
-                        <thead>
+<div class="container-fluid container">
+    <h3>Update Physical Meeting</h3>
+    <form asp-controller="Physical" method="post" role="form">
+        <main role="main" class="pb-3">            
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>List Id</th>
+                        <th>Suspend True</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>District</th>
+                        <th>Town</th>
+                        <th>Group Name</th>
+                        <th>Information</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ListModel == null)
+                    {
+                        <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var m in Model.ListModel)
+                        {
+                            <!-- Begin of table -->
                             <tr>
-                                <th>List Id</th>
-                                <th>Suspend True</th>
-                                <th>Day</th>
-                                <th>Time</th>
-                                <th>Town</th>
-                                <th>Group Name</th>
-                                <th>Information</th>
-                                <th>Location</th>
-                                <th>Type</th>
-                                <th>Update</th>
+                                <td>@m.ListID</td>
+                                <td>
+                                    <select asp-for="SuspendSelect" asp-items="@Model.Suspended">
+                                        <option value="@m.suspend">@m.suspend</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                        <option value="@m.DOW">@m.Day</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                                        <option value="@m.TimeID">@m.Time</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                                        <option value="@m.District">@m.District</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
+                                        <option value="@m.Town">@m.Town</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input asp-for="GroupNameSelect" class="form-control" value="@m.GroupName" />
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="InformationSelect" class="form-control" value="@m.Information" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="LocationSelect" class="form-control" value="@m.Location" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="TypeSelect" class="form-control" value="@m.Type" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-center panel-body">
+                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.ListModel == null)
-                            {
-                                <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
-                            }
-                            else
-                            {
-                                @foreach (var m in Model.ListModel)
-                                {
-                                    <!-- Begin of table -->
-                                    <tr>
-                                        <td>@m.ListID</td>
-                                        <td>
-                                            <select asp-for="SuspendSelect" asp-items="@Model.Suspended">
-                                                <option value="@m.suspend">@m.suspend</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
-                                                <option value="@m.DOW">@m.Day</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
-                                                <option value="@m.TimeID">@m.Time</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
-                                                <option value="@m.Town">@m.Town</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input asp-for="GroupNameSelect" class="form-control" value="@m.GroupName" />
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input asp-for="InformationSelect" class="form-control" value="@m.Information" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input asp-for="LocationSelect" class="form-control" value="@m.Location" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input asp-for="TypeSelect" class="form-control" value="@m.Type" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="text-center panel-body">
-                                                <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                    <div class="form-inline">
-                        <div class="text-center panel-body">
-                            <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
-                        </div>
-                        <hr />
-                        <h2>@ViewBag.Result</h2>
-                    </div>
-                </main>
-            </form>
-        </div>
-    </div>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div class="form-inline">
+                <div class="text-center panel-body">
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+                </div>
+                <hr />
+                <h2>@ViewBag.Result</h2>
+            </div>
+        </main>
+    </form>
+</div>

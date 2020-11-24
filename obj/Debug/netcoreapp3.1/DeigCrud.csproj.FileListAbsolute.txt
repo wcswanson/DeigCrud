@@ -111,8 +111,8 @@ C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\staticwebassets\DeigCrud
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.dll
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.pdb
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.genruntimeconfig.cache
-C:\aWorkspace\DeigCrud\DeigCrud\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Create.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Town\Update.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\DeigCrud.csprojAssemblyReference.cache
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\scopedcss\bundle\DeigCrud.styles.css

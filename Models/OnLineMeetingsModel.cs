@@ -15,6 +15,8 @@ namespace DeigCrud.Models
         [Display(Name = "Meeting Id")]
         [StringLength(11, MinimumLength = 3)]
 
+        public int District { get; set; }       
+
         [Required]
         public string meetingid { get; set; }
         [Display(Name = "Password")]

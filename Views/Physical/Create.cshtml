@@ -11,6 +11,7 @@
                 <td>Suspended</td>
                 <td>Day</td>
                 <td>Time</td>
+                <td> @*@m.District *@</td>-->
                 <td>Town</td>
                 <td>Group Name</td>
                 <td>Information</td>
@@ -26,18 +27,23 @@
                 </td>
                 <td>
                     <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
-                        <option value="-">Select day</option>
+                        <option value="-">-</option>
                     </select>
 
                 </td>
                 <td>
                     <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
-                        <option value="0">Select Time</option>
+                        <option value="0">-</option>
+                    </select>
+                </td>                
+                <td>
+                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                        <option value="-1">-</option>
                     </select>
                 </td>
                 <td>
                     <select asp-for="TownSelect" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
-                        <option value="-">Select Town</option>
+                        <option value="-">-</option>
                     </select>
                 </td>
                 <td>

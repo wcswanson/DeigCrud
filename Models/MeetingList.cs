@@ -13,6 +13,8 @@ namespace DeigCrud.Models
         [BindProperty]
         public int DOW { get; set; }
         [BindProperty]
+        public int District { get; set; }
+        [BindProperty]
         public string Day { get; set; }
         [BindProperty]
         public int TimeID { get; set; }

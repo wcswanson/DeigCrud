@@ -20,6 +20,10 @@ namespace DeigCrud.Models
         public string TimeSelect { get; set; }
         public IEnumerable<SelectListItem> TimeModel { get; set; }
 
+        //District
+        public int DistrictSelect { get; set; }
+        public IEnumerable<SelectListItem> DistrictModel { get; set; }
+
         // To get the rest of the online meeting data:
         public int zoomidSelect { get; set; }
         public string meetingidSelect { get; set; }
