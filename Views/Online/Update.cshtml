@@ -1,17 +1,17 @@
 ﻿@model DeigCrud.Models.DoViewModel
 
 <div class="container-fluid container">
-    <h1>Update</h1>
+    <h3>Update Online Meeting</h3>
+    <h3>@ViewBag.Result</h3>
     <form asp-controller="Online" method="post" role="form">
         <main role="main" class="pb-3">
-            <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
-            <!-- meeting list here-->
             <table class="table table-bordered table-sm table-striped">
                 <thead>
                     <tr>
                         <th>Zoom Id</th>
                         <th>Day</th>
                         <th>Time</th>
+                        <th>District</th>
                         <th>Group Name</th>
                         <th>Meeting Id</th>
                         <th>Password</th>
@@ -41,6 +41,11 @@
                                 <td>
                                     <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
                                         <option value="@m.timeid">@m.time</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                                        <option value="@m.District">@m.District</option>
                                     </select>
                                 </td>
                                 <td>
@@ -80,8 +85,6 @@
                 <div class="text-center panel-body">
                     <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
                 </div>
-                <hr />
-                <h3>@ViewBag.Result</h3>
             </div>
         </main>
     </form>

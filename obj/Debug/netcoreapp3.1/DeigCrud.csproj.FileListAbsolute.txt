@@ -88,11 +88,9 @@ C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Update
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Online\Create.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Online\Delete.cshtml.g.cs
-C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Online\Display.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Online\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Online\Update.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\Create.cshtml.g.cs
-C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\CreateForm.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\Delete.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Debug\netcoreapp3.1\Razor\Views\Physical\Update.cshtml.g.cs

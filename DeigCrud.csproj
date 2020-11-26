@@ -5,6 +5,11 @@
     <AspNetCoreHostingModel>OutofProcess</AspNetCoreHostingModel>
     <UserSecretsId>ed183263-5320-4c7d-ad22-1b05e530750c</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Online\Display.cshtml" />
+    <Content Remove="Views\Physical\CreateForm.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />

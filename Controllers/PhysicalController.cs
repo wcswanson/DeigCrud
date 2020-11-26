@@ -39,13 +39,13 @@ namespace DeigCrud.Controllers
     public class PhysicalController : Controller
     {
         // 0 might be better as -1 for the int values
-        const string SPUPATE = "spUpdateList";
-        const string SPCREATE = "spCreateList";
-        const string SPDELETE = "spDeleteList";
-        const string SPDISTRICT = "spDistrict";
-        const string UPDATE = "U";
-        const string CREATE = "C";
-        const string DELETE = "D";
+        //const string SPUPATE = "spUpdateList";
+        //const string SPCREATE = "spCreateList";
+        //const string SPDELETE = "spDeleteList";
+        //const string SPDISTRICT = "spDistrict";
+        //const string UPDATE = "U";
+        //const string CREATE = "C";
+        //const string DELETE = "D";
 
         int listId = 0;
         char b = 'a';
@@ -57,9 +57,10 @@ namespace DeigCrud.Controllers
         int districtNumber = -1;
 
         //private Stream fileStream;
-
+        
         public IActionResult Index()
         {
+            
             //todo: Add TempData["sender"] for update, created, deleted
             var list = TempData["id"];
             if (list != null)
@@ -68,11 +69,12 @@ namespace DeigCrud.Controllers
             }
             var dlmodel = new DlViewModel()
             {
-                DistrictModel = HelperFunctions.PopulateDistricts(),
-                TownModel = PopulateTowns(),
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
+                
+                DistrictModel = PhysicalHelpers.PopulateDistricts(),
+                TownModel = PhysicalHelpers.PopulateTowns(),
+                DOWModel = PhysicalHelpers.PopulateDOW(),
+                TimeModel = PhysicalHelpers.PopulateTime(),
+                ListModel = PhysicalHelpers.PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
 
             if (listId > 0)
@@ -115,11 +117,11 @@ namespace DeigCrud.Controllers
 
             var dlmodel = new DlViewModel()
             {
-                DistrictModel = HelperFunctions.PopulateDistricts(),
-                TownModel = PopulateTowns(),
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, DOWSelect, TimeSelect, TownSelect, sp, DistrictSelect)
+                DistrictModel = PhysicalHelpers.PopulateDistricts(),
+                TownModel = PhysicalHelpers.PopulateTowns(),
+                DOWModel = PhysicalHelpers.PopulateDOW(),
+                TimeModel = PhysicalHelpers.PopulateTime(),
+                ListModel = PhysicalHelpers.PopulateList(listId, b, DOWSelect, TimeSelect, TownSelect, sp, DistrictSelect)
             };
 
             return View(dlmodel);
@@ -130,11 +132,11 @@ namespace DeigCrud.Controllers
         {
             var dlmodel = new DlViewModel()
             {
-                DistrictModel = HelperFunctions.PopulateDistricts(),
-                TownModel = PopulateTowns(),
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
+                DistrictModel = PhysicalHelpers.PopulateDistricts(),
+                TownModel = PhysicalHelpers.PopulateTowns(),
+                DOWModel = PhysicalHelpers.PopulateDOW(),
+                TimeModel = PhysicalHelpers.PopulateTime(),
+                ListModel = PhysicalHelpers.PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
             return View("Create", dlmodel);
         }
@@ -144,16 +146,16 @@ namespace DeigCrud.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(DlViewModel dl)
         {
-            //todo: Create constants for sp for create and update
-            //todo: Call function, passing in the model, and sp name.
-            //todo: redirect to index to display the new record with ListId
+            //todo:  z Create constants for sp for create and update
+            //todo: z Call function, passing in the model, and sp name.
+            //todo:  z redirect to index to display the new record with ListId
             //todo: z Create page -- add vars containers
 
-            string rc = UpdateList(dl, listId, SPCREATE);
+            string rc = PhysicalHelpers.UpdateList(dl, listId, PhysicalHelpers.SPCREATE);
 
             // Int or string?           
             TempData["id"] = Convert.ToInt32(rc);
-            TempData["sender"] = CREATE;
+            TempData["sender"] = PhysicalHelpers.CREATE;
             return RedirectToAction("Index");
         }
 
@@ -163,11 +165,11 @@ namespace DeigCrud.Controllers
             listId = id;
             var dlmodel = new DlViewModel()
             {
-                DistrictModel = HelperFunctions.PopulateDistricts(),
-                TownModel = PopulateTowns(),
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
+                DistrictModel = PhysicalHelpers.PopulateDistricts(),
+                TownModel = PhysicalHelpers.PopulateTowns(),
+                DOWModel = PhysicalHelpers.PopulateDOW(),
+                TimeModel = PhysicalHelpers.PopulateTime(),
+                ListModel = PhysicalHelpers.PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
 
             ViewBag.Result = $"Update meeting with the id: {listId.ToString()}";
@@ -180,7 +182,7 @@ namespace DeigCrud.Controllers
         public IActionResult Update(DlViewModel dlModel)
         {
             int id = Convert.ToInt32(TempData["id"]);
-            string rc = UpdateList(dlModel, id, SPUPATE);
+            string rc = PhysicalHelpers.UpdateList(dlModel, id, PhysicalHelpers.UPDATE);
 
             TempData["id"] = id;
             return RedirectToAction("Index");
@@ -190,14 +192,16 @@ namespace DeigCrud.Controllers
         // [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
+
+            // How to display only without the drop downs?
             listId = id;
             var dlmodel = new DlViewModel()
             {
-                DistrictModel = HelperFunctions.PopulateDistricts(),
-                TownModel = PopulateTowns(),
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                ListModel = PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
+                DistrictModel = PhysicalHelpers.PopulateDistricts(),
+                TownModel = PhysicalHelpers.PopulateTowns(),
+                DOWModel = PhysicalHelpers.PopulateDOW(),
+                TimeModel = PhysicalHelpers.PopulateTime(),
+                ListModel = PhysicalHelpers.PopulateList(listId, b, dayId, timeId, town, sp, districtNumber)
             };
 
             TempData["id"] = listId;
@@ -223,7 +227,7 @@ namespace DeigCrud.Controllers
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
-                SqlCommand cmd = new SqlCommand(SPDELETE, connection);
+                SqlCommand cmd = new SqlCommand(PhysicalHelpers.SPDELETELIST, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 //todo: Finish this code
                 SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
@@ -244,12 +248,10 @@ namespace DeigCrud.Controllers
                     connection.Close();
                 }
 
-
-
                 // Set this to null or Index will not display data.
                 // ViewBag.Result = "The meeting with the id: " + listId.ToString() + " is staged to be deleted";
                 TempData["id"] = listId;
-                TempData["sender"] = DELETE;
+                TempData["sender"] = PhysicalHelpers.DELETE;
                 return RedirectToAction("Index");
             }
         }
@@ -265,430 +267,7 @@ namespace DeigCrud.Controllers
         }
 
         // This should go into a separate file
-        //private static List<SelectListItem> PopulateDistricts()
-        //{
-        //    List<SelectListItem> items = new List<SelectListItem>();
-
-        //    using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-        //    {
-        //        connection.Open();
-
-        //        SqlCommand cmd = new SqlCommand(SPDISTRICT, connection);
-        //        cmd.CommandType = CommandType.StoredProcedure;
-
-        //        using (SqlDataReader dr = cmd.ExecuteReader())
-        //        {
-        //            try
-        //            {
-        //                while (dr.Read())
-        //                {
-        //                    items.Add(new SelectListItem
-        //                    {
-        //                        Value = dr["District"].ToString(),
-        //                        Text = dr["District"].ToString()
-        //                    });
-        //                }
-        //            }
-        //            catch (SqlException ex)
-        //            {
-        //                msg = msg + $" {SPDISTRICT}: {ex.Message.ToString()}";
-        //            }
-        //            finally
-        //            {
-        //                connection.Close();
-        //            }
-        //        }
-        //    }
-        //    return items;
-        //}
-        private static List<SelectListItem> PopulateTowns()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                connection.Open();
-                string sql = "spTowns";
-
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    try
-                    {
-                        while (dr.Read())
-                        {
-                            items.Add(new SelectListItem
-                            {
-                                Value = dr["Town"].ToString(),
-                                Text = dr["Town"].ToString()
-                            });
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        msg = msg + $" spTowns: {ex.Message.ToString()}";
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
-                }
-            }
-            return items;
-        }
-
-        //DOW
-        private static List<SelectListItem> PopulateDOW()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                connection.Open();
-                string sql = "spDOW";
-
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    try
-                    {
-                        while (dr.Read())
-                        {
-                            items.Add(new SelectListItem
-                            {
-                                Value = dr["DayID"].ToString(),
-                                Text = dr["DayName"].ToString()
-                            });
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        msg = msg + $" spDow: {ex.Message.ToString()} ";
-                    }
-                }
-
-                connection.Close();
-            }
-            return items;
-        }
-
-        // Time
-        private static List<SelectListItem> PopulateTime()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
-
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                connection.Open();
-                string sql = "spTime";
-
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    try
-                    {
-                        while (dr.Read())
-                        {
-                            items.Add(new SelectListItem
-                            {
-                                Value = dr["TimeID"].ToString(),
-                                Text = dr["Time"].ToString()
-                            });
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        msg = $"spTime: {ex.Message.ToString()}";
-                    }
-
-                }
-                connection.Close();
-            }
-            return items;
-        }
-
-#nullable enable
-        private static List<MeetingListModel> PopulateList(int listId, char? b, int? dow, int? timeId, string town, string? sp, int? districtnumber)  // remove sp?
-        {
-           
-            List<MeetingListModel> meetingList = new List<MeetingListModel>();
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                connection.Open();
-
-                string sql = "spMaintenanceList";
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                // Add Parms
-                // ListId
-                SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
-                if (listId == 0)
-                {
-                    listid.Value = null;
-                }
-                else
-                {
-                    listid.Value = listId;
-                }
-
-                // Suspend
-                SqlParameter bsuspend = cmd.Parameters.Add("@Suspend", SqlDbType.Bit);
-                if (b == '0')
-                {
-                    bsuspend.Value = false;
-                }
-                else if (b == '1')
-                {
-                    bsuspend.Value = true;
-                }
-                else
-                {
-                    bsuspend.Value = null;
-                }
-
-                // DOW (day of week id)
-                SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);
-
-                if (dow > 0 && dow < 8)
-                {
-                    dowid.Value = (int)dow;
-                }
-                else
-                {
-                    dowid.Value = null;
-                }
-
-                // Time Id
-                SqlParameter timeid = cmd.Parameters.Add("@TimeID", SqlDbType.Int);
-                if (timeId > 0 && timeId < 370)
-                {
-                    timeid.Value = (int)timeId;
-                }
-                else
-                {
-                    timeid.Value = null;
-                }
-
-                // District
-                SqlParameter district = cmd.Parameters.Add("@District", SqlDbType.Int);
-                if (districtnumber > 0)
-                {
-                    district.Value = (int)districtnumber;
-                }
-                else
-                {
-                    district.Value = null;
-                }
-
-                // Town
-                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);
-                if (town.Length < 4)
-                {
-                    townname.Value = null;
-                }
-                else
-                {
-                    townname.Value = town.ToString();
-                }
-
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    try
-                    {
-                        while (dr.Read())
-                        {
-                            MeetingListModel ml = new MeetingListModel();
-                            ml.ListID = Convert.ToInt32(dr["ListID"]);
-                            ml.DOW = Convert.ToInt32(dr["DOW"]);
-                            ml.Day = Convert.ToString(dr["Day"]);
-                            ml.TimeID = Convert.ToInt32(dr["TimeID"]);
-                            ml.Time = Convert.ToString(dr["Time"]);
-                            ml.District = Convert.ToInt32(dr["District"]);
-                            ml.Town = Convert.ToString(dr["Town"]);
-                            ml.GroupName = Convert.ToString(dr["GroupName"]);
-                            ml.Information = Convert.ToString(dr["Information"]);
-                            ml.Location = Convert.ToString(dr["Location"]);
-                            ml.Type = Convert.ToString(dr["Type"]);
-                            ml.suspend = Convert.ToBoolean(dr["suspend"]);
-
-                            meetingList.Add(ml);
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        msg = msg + $" spmaintenanceList: {ex.Message.ToString()}";
-                    }
-                    connection.Close();
-                }
-
-                return meetingList;
-            }
-        }
-
-#nullable enable
-        // Update List
-        public static string UpdateList(DlViewModel dl, int id, string sp)  // Remove sp from signature?
-        {
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                string sql = sp;    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                // Add Parms
-                // ListId
-                if (sp == SPUPATE)
-                {
-                    SqlParameter listid = cmd.Parameters.Add("@ListId", SqlDbType.Int);
-                    if (id == 0)
-                    {
-                        listid.Value = null;
-                    }
-                    else
-                    {
-                        listid.Value = id;
-                    }
-                }
-                else
-                {
-                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;
-                }
-
-                // Suspend
-                SqlParameter bsuspend = cmd.Parameters.Add("@Suspend", SqlDbType.Bit);
-                if (dl.SuspendSelect == "1")
-                {
-                    bsuspend.Value = true;
-                }
-                else
-                {
-                    bsuspend.Value = false;
-                }
-
-                //DOW(day of week id)
-                int dow = Convert.ToInt32(dl.DOWSelect);
-                SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);
-
-                if (dow > 0 && dow < 8)
-                {
-                    dowid.Value = (int)dow;
-                }
-                else
-                {
-                    dowid.Value = 8;
-                }
-
-                // Time Id
-                int timeId = Convert.ToInt32(dl.TimeSelect);
-                SqlParameter timeid = cmd.Parameters.Add("@TimeID", SqlDbType.Int);
-                if (timeId > 0 && timeId < 370)
-                {
-                    timeid.Value = (int)timeId;
-                }
-                else
-                {
-                    timeid.Value = 0;
-                }
-
-                // District
-                int districtnumber = Convert.ToInt32(dl.DistrictSelect);
-                SqlParameter district = cmd.Parameters.Add("@District", SqlDbType.Int);
-                if (districtnumber > 0 )
-                {
-                    district.Value = (int)districtnumber;
-                }
-                else
-                {
-                    district.Value = 0;
-                }
-
-                // Town
-                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);
-                if (String.IsNullOrEmpty(dl.TownSelect))
-                {
-                    townname.Value = "";
-                }
-                else
-                {
-                    townname.Value = dl.TownSelect.ToString();
-                }
-
-                // Group Name
-                SqlParameter groupname = cmd.Parameters.Add("@GroupName", SqlDbType.NVarChar);
-                if (String.IsNullOrEmpty(dl.GroupNameSelect))
-                {
-                    groupname.Value = "";
-                }
-                else
-                {
-                    groupname.Value = dl.GroupNameSelect.ToString();
-                }
-
-                // Informantion
-                SqlParameter information = cmd.Parameters.Add("@Information", SqlDbType.NVarChar);
-                if (String.IsNullOrEmpty(dl.InformationSelect))
-                {
-                    information.Value = "";
-                }
-                else
-                {
-                    information.Value = dl.InformationSelect.ToString();
-                }
-
-                // Location
-                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.NVarChar);
-                if (String.IsNullOrEmpty(dl.LocationSelect))
-                {
-                    location.Value = "";
-                }
-                else
-                {
-                    location.Value = dl.LocationSelect.ToString();
-                }
-
-                // Type
-                SqlParameter type = cmd.Parameters.Add("@Type", SqlDbType.NVarChar);
-                if (String.IsNullOrEmpty(dl.TypeSelect))
-                {
-                    type.Value = "";
-                }
-                else
-                {
-                    type.Value = dl.TypeSelect.ToString();
-                }
-
-                connection.Open();
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                    if (sp == SPCREATE)
-                    {
-                        msg = cmd.Parameters["@new_id"].Value.ToString();
-
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    msg = msg + $" spList: {ex.Message.ToString()}";
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
-            }
-
-            return msg.ToString();
-        }
-
+        
 #nullable enable
         private static string ExportMeetingList()
         {
@@ -738,7 +317,6 @@ namespace DeigCrud.Controllers
                 return stringBuilder.ToString();
             }
         }
-
 
     } // controller class
 } // Namespance

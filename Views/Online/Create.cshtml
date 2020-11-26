@@ -2,13 +2,14 @@
  
 
 <div class="container-fluid container">
-    <h1>Add (create) A New Meeting</h1>
-    <h2 class="alert-danger">@ViewBag.Result</h2>
+    <h3>Add A New Meeting</h3>
+    <h3 class="alert-danger">@ViewBag.Result</h3>
     <form asp-controller="Online" method="post" role="form">
         <table>
             <tr>
                 <td>Day</td>
                 <td>Time</td>
+                <td>District</td>
                 <td>Group Name</td>
                 <td>Meeting ID</td>
                 <td>Password</td>
@@ -20,12 +21,17 @@
 
                 <td>
                     <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
-                        <option value="-">Select day</option>
+                        <option value="-">-</option>
                     </select>
                 </td>
                 <td>
                     <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
-                        <option value="0">Select Time</option>
+                        <option value="0">-</option>
+                    </select>
+                </td>
+                <td>
+                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                        <option value="-1">-</option>
                     </select>
                 </td>
                 <td>

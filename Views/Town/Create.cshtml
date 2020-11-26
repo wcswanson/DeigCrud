@@ -19,7 +19,7 @@
                     <tr>
                         <td>
                             <div class="form-group">
-                                <div class="col-sm-2">                                    
+                                <div class="col-sm-2">
                                     <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"));">
                                         <option value="-1">All</option>
                                     </select>
@@ -35,9 +35,12 @@
                             </div>
                         </td>
                     </tr>
-                </table><br />
-                <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
-            </div>
+                </table>
+            </div><br />
+                <div class="panel-body">
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+                </div>
+            
         </main>
     </form>
 </div>

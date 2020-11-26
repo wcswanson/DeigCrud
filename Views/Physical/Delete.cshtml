@@ -1,62 +1,61 @@
 ﻿@model DeigCrud.Models.DlViewModel
 
-    <div class="container-fluid container">
-        <h1>Delete Page</h1>
-        <!-- <form asp-controller="Home" method="post" role="form"> -->
-        <form asp-controller="Physical" method="post">
-            <main role="main" class="pb-3">
-                <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
-                <!-- meeting list here-->
-                <table class="table table-bordered table-sm table-striped">
-                    <thead>
-                        <tr>
-                            <th>List Id</th>
-                            <th>Suspend True</th>
-                            <th>Day</th>
-                            <th>Time</th>
-                            <th>District</th>
-                            <th>Town</th>
-                            <th>Group Name</th>
-                            <th>Information</th>
-                            <th>Location</th>
-                            <th>Type</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.ListModel == null)
-                        {
-                            <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
-                        }
-                        else
+<div class="container-fluid container">
+    <h3>DeleteOnline Meeting</h3>
+    <h3>@ViewBag.Result</h3>    
+    <form asp-controller="Physical" method="post">
+        <main role="main" class="pb-3">
+            <!--  <a asp-action="Create" class="btn btn-group-sm btn-link">Add a new meeting</a>-->
+            <!-- meeting list here-->
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>List Id</th>
+                        <th>Suspend True</th>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>District</th>
+                        <th>Town</th>
+                        <th>Group Name</th>
+                        <th>Information</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ListModel == null)
+                    {
+                        <tr><td colspan="10" class="text-center">No Meeting Lsit for that selection</td></tr>
+                    }
+                    else
+                    {
+                        <!-- Begin of table -->
+                        @foreach (var m in Model.ListModel)
                         {
                             <!-- Begin of table -->
-                            @foreach (var m in Model.ListModel)
-                            {
-                                <!-- Begin of table -->
-                                <tr>
-                                    <td>@m.ListID</td>
-                                    <td>@m.suspend</td>
-                                    <td>@m.Day</td>
-                                    <td>@m.Time</td>
-                                    <td>@m.District</td>
-                                    <td>@m.Town</td>
-                                    <td>@m.GroupName</td>
-                                    <td>@m.Information</td>
-                                    <td>@m.Location</td>
-                                    <td>@m.Type</td>
-                                    <td>
-                                        <div class="text-center panel-body">
-                                            <input type="submit" value="Delete" asp-controller="Physical" asp-action="Delete" class="btn btn-sm btn-danger" />
-                                            <input type="submit" value="Cancel" asp-controller="Physical" asp-action="Cancel" class="btn btn-sm btn-secondary" />
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
+                            <tr>
+                                <td>@m.ListID</td>
+                                <td>@m.suspend</td>
+                                <td>@m.Day</td>
+                                <td>@m.Time</td>
+                                <td>@m.District</td>
+                                <td>@m.Town</td>
+                                <td>@m.GroupName</td>
+                                <td>@m.Information</td>
+                                <td>@m.Location</td>
+                                <td>@m.Type</td>
+                                <td>
+                                    <div class="text-center panel-body">
+                                        <input type="submit" value="Delete" asp-controller="Physical" asp-action="Delete" class="btn btn-sm btn-danger" />
+                                        <input type="submit" value="Cancel" asp-controller="Physical" asp-action="Cancel" class="btn btn-sm btn-secondary" />
+                                    </div>
+                                </td>
+                            </tr>
                         }
-                    </tbody>
-                </table>
-                <h3>@ViewBag.Result</h3>
-            </main>
-        </form>
-    </div>
+                    }
+                </tbody>
+            </table>
+        </main>
+    </form>
+</div>

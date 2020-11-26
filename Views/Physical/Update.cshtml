@@ -2,8 +2,9 @@
 
 <div class="container-fluid container">
     <h3>Update Physical Meeting</h3>
+    <h3>@ViewBag.Result</h3>
     <form asp-controller="Physical" method="post" role="form">
-        <main role="main" class="pb-3">            
+        <main role="main" class="pb-3">
             <table class="table table-bordered table-sm table-striped">
                 <thead>
                     <tr>
@@ -89,8 +90,6 @@
                 <div class="text-center panel-body">
                     <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
                 </div>
-                <hr />
-                <h2>@ViewBag.Result</h2>
             </div>
         </main>
     </form>
