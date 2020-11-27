@@ -1,12 +1,9 @@
-﻿using DeigCrud.Models;
+﻿using DeigCrud.Infrastructure;
+using DeigCrud.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using DeigCrud.Infrastructure;
 
 namespace DeigCrud.Controllers
 {

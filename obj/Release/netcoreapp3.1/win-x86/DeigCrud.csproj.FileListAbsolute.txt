@@ -1,7 +1,6 @@
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Release\netcoreapp3.1\win-x86\appsettings.Development.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Release\netcoreapp3.1\win-x86\appsettings.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Release\netcoreapp3.1\win-x86\libman.json
-C:\aWorkspace\DeigCrud\DeigCrud\bin\Release\netcoreapp3.1\win-x86\Properties\launchSettings.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Release\netcoreapp3.1\win-x86\DeigCrud.exe
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Release\netcoreapp3.1\win-x86\DeigCrud.deps.json
 C:\aWorkspace\DeigCrud\DeigCrud\bin\Release\netcoreapp3.1\win-x86\DeigCrud.runtimeconfig.json
@@ -411,11 +410,9 @@ C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Ad
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Home\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Online\Create.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Online\Delete.cshtml.g.cs
-C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Online\Display.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Online\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Online\Update.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Physical\Create.cshtml.g.cs
-C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Physical\CreateForm.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Physical\Delete.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Physical\Index.cshtml.g.cs
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Physical\Update.cshtml.g.cs
@@ -434,3 +431,7 @@ C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\staticwebasset
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\DeigCrud.dll
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\DeigCrud.pdb
 C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\DeigCrud.genruntimeconfig.cache
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\scopedcss\bundle\DeigCrud.styles.css
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Town\Create.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Town\Index.cshtml.g.cs
+C:\aWorkspace\DeigCrud\DeigCrud\obj\Release\netcoreapp3.1\win-x86\Razor\Views\Town\Update.cshtml.g.cs
