@@ -180,7 +180,7 @@ namespace DeigCrud.Controllers
         public IActionResult Update(DlViewModel dlModel)
         {
             int id = Convert.ToInt32(TempData["id"]);
-            string rc = PhysicalHelpers.UpdateList(dlModel, id, PhysicalHelpers.UPDATE);
+            string rc = PhysicalHelpers.UpdateList(dlModel, id, PhysicalHelpers.SPUPDATELIST);
 
             TempData["id"] = id;
             return RedirectToAction("Index");

@@ -420,7 +420,7 @@ namespace DeigCrud.Infrastructure
                 }
 
                 // Location
-                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.NVarChar);
+                SqlParameter location = cmd.Parameters.Add("@Location", SqlDbType.VarChar);
                 if (String.IsNullOrEmpty(dl.LocationSelect))
                 {
                     location.Value = "";
@@ -431,7 +431,7 @@ namespace DeigCrud.Infrastructure
                 }
 
                 // Type
-                SqlParameter type = cmd.Parameters.Add("@Type", SqlDbType.NVarChar);
+                SqlParameter type = cmd.Parameters.Add("@Type", SqlDbType.VarChar);
                 if (String.IsNullOrEmpty(dl.TypeSelect))
                 {
                     type.Value = "";
