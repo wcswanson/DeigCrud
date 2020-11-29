@@ -149,7 +149,7 @@ namespace DeigCrud.Controllers
             //todo:  z redirect to index to display the new record with ListId
             //todo: z Create page -- add vars containers
 
-            string rc = PhysicalHelpers.UpdateList(dl, listId, PhysicalHelpers.SPCREATE);
+            string rc = PhysicalHelpers.UpdateList(dl, listId, PhysicalHelpers.SPUPDATELIST);
 
             // Int or string?           
             TempData["id"] = Convert.ToInt32(rc);
