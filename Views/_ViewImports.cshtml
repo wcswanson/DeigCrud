@@ -1,1 +1,5 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using DeigCrud.Models
+@using Microsoft.AspNetCore.Identity
+@* The last item is the project name *@
+@addTagHelper DeigCrud.TagHelpers.*, DeigCrud
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

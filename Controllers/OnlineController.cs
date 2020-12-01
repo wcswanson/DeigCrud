@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DeigCrud.Infrastructure;
 using DeigCrud.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 
 namespace DeigCrud.Controllers
 {
+    [Authorize(Roles = "Admin, List")]
     public class OnlineController : Controller
     {
         const string SPUPATE = "spUpdateOnlineList";
@@ -26,24 +24,27 @@ namespace DeigCrud.Controllers
         int dayId = 0;
         int timeId = 0;
         static string msg = "";
-        string sp = "";
+        int districtnumber = 0;
+        //string sp = "";
+
 
 #nullable enable
         [HttpGet]
         public IActionResult Index()
         {
-           
+
             ZoomId = Convert.ToInt32(TempData["id"]);
-           if (ZoomId== 0)          
+            if (ZoomId == 0)
             {
                 ZoomId = 0;
-            }            
+            }
 
             var doViewmodel = new DoViewModel()
             {
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, dayId, timeId)
+                DOWModel = DropDownHelpers.PopulateDOW(),
+                TimeModel = DropDownHelpers.PopulateTime(),
+                DistrictModel = DropDownHelpers.PopulateDistricts(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)OnlineHelpers.PopulateOnlineList(ZoomId, dayId, timeId, districtnumber)
             };
 
             // For displaying rssults
@@ -73,21 +74,23 @@ namespace DeigCrud.Controllers
         // Index Post
         [HttpPost]
         // [ValidateAntiForgeryToken]
-        public IActionResult Index(int? ZoomId, int? DOWSelect, int? TimeSelect)
+        public IActionResult Index(int? ZoomId, int? DOWSelect, int? TimeSelect, int? DistrictSelect)
         {
 
             var doViewmodel = new DoViewModel()
             {
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, DOWSelect, TimeSelect)
+                DOWModel = DropDownHelpers.PopulateDOW(),
+                TimeModel = DropDownHelpers.PopulateTime(),
+                DistrictModel = DropDownHelpers.PopulateDistricts(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)OnlineHelpers.PopulateOnlineList(ZoomId, DOWSelect, TimeSelect, DistrictSelect)
             };
 
             return View(doViewmodel);
         }
 
         // Get Display
-        [HttpGet]        public IActionResult Display()
+        [HttpGet]
+        public IActionResult Display()
         {
 
             ZoomId = Convert.ToInt32(TempData["id"]);
@@ -98,11 +101,12 @@ namespace DeigCrud.Controllers
 
             var doViewmodel = new DoViewModel()
             {
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, dayId, timeId)
+                DOWModel = DropDownHelpers.PopulateDOW(),
+                TimeModel = DropDownHelpers.PopulateTime(),
+                DistrictModel = DropDownHelpers.PopulateDistricts(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)OnlineHelpers.PopulateOnlineList(ZoomId, dayId, timeId, districtnumber)
             };
-                        
+
             return View(doViewmodel);
         }
 
@@ -112,9 +116,10 @@ namespace DeigCrud.Controllers
 
             var doViewmodel = new DoViewModel()
             {
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, DOWSelect, TimeSelect)
+                DOWModel = DropDownHelpers.PopulateDOW(),
+                TimeModel = DropDownHelpers.PopulateTime(),
+                DistrictModel = DropDownHelpers.PopulateDistricts(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)OnlineHelpers.PopulateOnlineList(ZoomId, DOWSelect, TimeSelect, districtnumber)
             };
 
             return View(doViewmodel);
@@ -125,9 +130,10 @@ namespace DeigCrud.Controllers
         {
             var doViewmodel = new DoViewModel()
             {
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(ZoomId, dayId, timeId)
+                DOWModel = DropDownHelpers.PopulateDOW(),
+                TimeModel = DropDownHelpers.PopulateTime(),
+                DistrictModel = DropDownHelpers.PopulateDistricts(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)OnlineHelpers.PopulateOnlineList(ZoomId, dayId, timeId, districtnumber)
             };
             return View("Create", doViewmodel);
         }
@@ -141,7 +147,7 @@ namespace DeigCrud.Controllers
             //todo: z Create page -- add vars containers
 
             string rc = "err";
-            rc = UpdateOnlineList(dol, ZoomId, SPCREATE);
+            rc = OnlineHelpers.UpdateOnlineList(dol, ZoomId, SPCREATE);
 
             // Int or string?           
             TempData["id"] = Convert.ToInt32(rc);
@@ -155,9 +161,10 @@ namespace DeigCrud.Controllers
             ZoomId = id;
             var domodel = new DoViewModel()
             {
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                OnlineListModel = PopulateOnlineList(ZoomId, dayId, timeId)
+                DOWModel = DropDownHelpers.PopulateDOW(),
+                TimeModel = DropDownHelpers.PopulateTime(),
+                DistrictModel = DropDownHelpers.PopulateDistricts(),
+                OnlineListModel = OnlineHelpers.PopulateOnlineList(ZoomId, dayId, timeId, districtnumber)
             };
 
             ViewBag.Result = $"To update online meeting id: {ZoomId.ToString()}";
@@ -170,7 +177,7 @@ namespace DeigCrud.Controllers
         public IActionResult Update(DoViewModel dol)
         {
             int id = Convert.ToInt32(TempData["id"]);
-            string rc = UpdateOnlineList(dol, id, SPUPATE);
+            string rc = OnlineHelpers.UpdateOnlineList(dol, id, SPUPATE);
 
             ViewBag.Result = $"Updated online meeting id: {id.ToString()}";
             TempData["id"] = id;
@@ -184,9 +191,9 @@ namespace DeigCrud.Controllers
             ZoomId = id;
             var domodel = new DoViewModel()
             {
-                DOWModel = PopulateDOW(),
-                TimeModel = PopulateTime(),
-                OnlineListModel = PopulateOnlineList(ZoomId, dayId, timeId)
+                DOWModel = DropDownHelpers.PopulateDOW(),
+                TimeModel = DropDownHelpers.PopulateTime(),
+                OnlineListModel = OnlineHelpers.PopulateOnlineList(ZoomId, dayId, timeId, districtnumber)
             };
 
             TempData["id"] = ZoomId;
@@ -203,7 +210,7 @@ namespace DeigCrud.Controllers
             if (ZoomId > 0)
             {
                 //ZoomId = Convert.ToInt32(strId);
-                string rc = DeleteFunction(ZoomId);
+                string rc = OnlineHelpers.DeleteFunction(ZoomId);
                 TempData["id"] = ZoomId;
                 TempData["sender"] = DELETE;
             }
@@ -217,339 +224,339 @@ namespace DeigCrud.Controllers
             return RedirectToAction("Index");
         }
 
-       [HttpPost]     
-       [Route("[controller]/Cancel")]
+        [HttpPost]
+        [Route("[controller]/Cancel")]
         public IActionResult Cancel()
         {
 
-           ViewBag.Message = "Cancel delete request: ";
-           TempData["id"] = "0";
-          
+            ViewBag.Message = "Cancel delete request: ";
+            TempData["id"] = "0";
+
             return RedirectToAction("Index");
 
         }
 
-            /*   Helper functions  */
-        private static List<SelectListItem> PopulateDOW()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
+        /*   Helper functions  */
+        //private static List<SelectListItem> PopulateDOW()
+        //{
+        //    List<SelectListItem> items = new List<SelectListItem>();
 
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                connection.Open();
-                string sql = "spDOW";
+        //    using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+        //    {
+        //        connection.Open();
+        //        string sql = "spDOW";
 
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
+        //        SqlCommand cmd = new SqlCommand(sql, connection);
+        //        cmd.CommandType = CommandType.StoredProcedure;
 
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    try
-                    {
-                        while (dr.Read())
-                        {
-                            items.Add(new SelectListItem
-                            {
-                                Value = dr["DayID"].ToString(),
-                                Text = dr["DayName"].ToString()
-                            });
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        msg = msg + $" spDow: {ex.Message.ToString()} ";
-                    }
-                }
+        //        using (SqlDataReader dr = cmd.ExecuteReader())
+        //        {
+        //            try
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    items.Add(new SelectListItem
+        //                    {
+        //                        Value = dr["DayID"].ToString(),
+        //                        Text = dr["DayName"].ToString()
+        //                    });
+        //                }
+        //            }
+        //            catch (SqlException ex)
+        //            {
+        //                msg = msg + $" spDow: {ex.Message.ToString()} ";
+        //            }
+        //        }
 
-                connection.Close();
-            }
-            return items;
-        }
+        //        connection.Close();
+        //    }
+        //    return items;
+        //}
 
-        // Time
-        private static List<SelectListItem> PopulateTime()
-        {
-            List<SelectListItem> items = new List<SelectListItem>();
+        //// Time
+        //private static List<SelectListItem> PopulateTime()
+        //{
+        //    List<SelectListItem> items = new List<SelectListItem>();
 
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                connection.Open();
-                string sql = "spTime";
+        //    using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+        //    {
+        //        connection.Open();
+        //        string sql = "spTime";
 
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
+        //        SqlCommand cmd = new SqlCommand(sql, connection);
+        //        cmd.CommandType = CommandType.StoredProcedure;
 
 
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    try
-                    {
-                        while (dr.Read())
-                        {
-                            items.Add(new SelectListItem
-                            {
-                                Value = dr["TimeID"].ToString(),
-                                Text = dr["Time"].ToString()
-                            });
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        msg = $"spTime: {ex.Message.ToString()}";
-                    }
+        //        using (SqlDataReader dr = cmd.ExecuteReader())
+        //        {
+        //            try
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    items.Add(new SelectListItem
+        //                    {
+        //                        Value = dr["TimeID"].ToString(),
+        //                        Text = dr["Time"].ToString()
+        //                    });
+        //                }
+        //            }
+        //            catch (SqlException ex)
+        //            {
+        //                msg = $"spTime: {ex.Message.ToString()}";
+        //            }
 
-                }
-                connection.Close();
-            }
-            return items;
-        }
+        //        }
+        //        connection.Close();
+        //    }
+        //    return items;
+        //}
 
         /*   Support functions */
-#nullable enable
-        // Update List
-        public static string UpdateOnlineList(DoViewModel dol, int id, string sp)  
-        {
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                //string sql = sp;    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
-                SqlCommand cmd = new SqlCommand(sp, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
+//#nullable enable
+//        // Update List
+//        public static string UpdateOnlineList(DoViewModel dol, int id, string sp)
+//        {
+//            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+//            {
+//                //string sql = sp;    // This is the only thing that needs to bechanged to do inserts. Add a constant for the procedure name and pass it in to this function.
+//                SqlCommand cmd = new SqlCommand(sp, connection);
+//                cmd.CommandType = CommandType.StoredProcedure;
 
-                // Add Parms
-                // ZoomId
-                if (sp == SPUPATE)
-                {
-                    SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
-                    if (id == 0)
-                    {
-                        zoomid.Value = null;
-                    }
-                    else
-                    {
-                        zoomid.Value = id;
-                    }
-                }
-                // Create and get the return ZoomId
-                else
-                {
-                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;
-                }
-                
-                //DOW(day of week id)
-                int dow = Convert.ToInt32(dol.DOWSelect);
-                SqlParameter dowid = cmd.Parameters.Add("@DayId", SqlDbType.Int);
+//                // Add Parms
+//                // ZoomId
+//                if (sp == SPUPATE)
+//                {
+//                    SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
+//                    if (id == 0)
+//                    {
+//                        zoomid.Value = null;
+//                    }
+//                    else
+//                    {
+//                        zoomid.Value = id;
+//                    }
+//                }
+//                // Create and get the return ZoomId
+//                else
+//                {
+//                    cmd.Parameters.Add("@new_id", SqlDbType.Int).Direction = ParameterDirection.Output;
+//                }
 
-                if (dow > 0 && dow < 8)
-                {
-                    dowid.Value = (int)dow;
-                }
-                else
-                {
-                    dowid.Value = 8;
-                }
+//                //DOW(day of week id)
+//                int dow = Convert.ToInt32(dol.DOWSelect);
+//                SqlParameter dowid = cmd.Parameters.Add("@DayId", SqlDbType.Int);
 
-                // Time Id
-                int timeId = Convert.ToInt32(dol.TimeSelect);
-                SqlParameter timeid = cmd.Parameters.Add("@TimeId", SqlDbType.Int);
-                if (timeId > 0 && timeId < 370)
-                {
-                    timeid.Value = (int)timeId;
-                }
-                else
-                {
-                    timeid.Value = 0;
-                }
-                
-                // Group Name
-                SqlParameter groupname = cmd.Parameters.Add("@GroupName", SqlDbType.VarChar);
-                if (String.IsNullOrEmpty(dol.groupnameSelect))
-                {
-                    groupname.Value = "";
-                }
-                else
-                {
-                    groupname.Value = dol.groupnameSelect.ToString();
-                }
+//                if (dow > 0 && dow < 8)
+//                {
+//                    dowid.Value = (int)dow;
+//                }
+//                else
+//                {
+//                    dowid.Value = 8;
+//                }
 
-                // Meeting Id
-                SqlParameter meetingid = cmd.Parameters.Add("@MeetingId", SqlDbType.VarChar);
-                if (String.IsNullOrEmpty(dol.meetingidSelect))
-                {
-                    meetingid.Value = "";
-                }
-                else
-                {
-                    meetingid.Value = dol.meetingidSelect.ToString();
-                }
+//                // Time Id
+//                int timeId = Convert.ToInt32(dol.TimeSelect);
+//                SqlParameter timeid = cmd.Parameters.Add("@TimeId", SqlDbType.Int);
+//                if (timeId > 0 && timeId < 370)
+//                {
+//                    timeid.Value = (int)timeId;
+//                }
+//                else
+//                {
+//                    timeid.Value = 0;
+//                }
 
-                // Pswd
-                SqlParameter pswd = cmd.Parameters.Add("@Pswd", SqlDbType.VarChar);
-                if (String.IsNullOrEmpty(dol.pswdSelect))
-                {
-                    pswd.Value = "";
-                }
-                else
-                {
-                    pswd.Value = dol.pswdSelect.ToString();
-                }
+//                // Group Name
+//                SqlParameter groupname = cmd.Parameters.Add("@GroupName", SqlDbType.VarChar);
+//                if (String.IsNullOrEmpty(dol.groupnameSelect))
+//                {
+//                    groupname.Value = "";
+//                }
+//                else
+//                {
+//                    groupname.Value = dol.groupnameSelect.ToString();
+//                }
 
-                // Telephone
-                SqlParameter telephone = cmd.Parameters.Add("@Telephone", SqlDbType.VarChar);
-                if (String.IsNullOrEmpty(dol.telephoneSelect))
-                {
-                    telephone.Value = "";
-                }
-                else
-                {
-                    telephone.Value = dol.telephoneSelect.ToString();
-                }
+//                // Meeting Id
+//                SqlParameter meetingid = cmd.Parameters.Add("@MeetingId", SqlDbType.VarChar);
+//                if (String.IsNullOrEmpty(dol.meetingidSelect))
+//                {
+//                    meetingid.Value = "";
+//                }
+//                else
+//                {
+//                    meetingid.Value = dol.meetingidSelect.ToString();
+//                }
 
-                // Notes                
-                SqlParameter notes = cmd.Parameters.Add("@Notes", SqlDbType.VarChar);
-                if (String.IsNullOrEmpty(dol.notesSelect))
-                {
-                    notes.Value = "";
-                }
-                else
-                {
-                    notes.Value = dol.notesSelect.ToString();
-                }
+//                // Pswd
+//                SqlParameter pswd = cmd.Parameters.Add("@Pswd", SqlDbType.VarChar);
+//                if (String.IsNullOrEmpty(dol.pswdSelect))
+//                {
+//                    pswd.Value = "";
+//                }
+//                else
+//                {
+//                    pswd.Value = dol.pswdSelect.ToString();
+//                }
 
-                connection.Open();             
+//                // Telephone
+//                SqlParameter telephone = cmd.Parameters.Add("@Telephone", SqlDbType.VarChar);
+//                if (String.IsNullOrEmpty(dol.telephoneSelect))
+//                {
+//                    telephone.Value = "";
+//                }
+//                else
+//                {
+//                    telephone.Value = dol.telephoneSelect.ToString();
+//                }
 
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                    if (sp == SPCREATE)
-                    {
-                        msg = cmd.Parameters["@new_id"].Value.ToString();
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    msg = msg + $" spUpdate OnlineList: {ex.Message.ToString()}";
-                }
-                finally
-                {
-                    connection.Close();
-                }
+//                // Notes                
+//                SqlParameter notes = cmd.Parameters.Add("@Notes", SqlDbType.VarChar);
+//                if (String.IsNullOrEmpty(dol.notesSelect))
+//                {
+//                    notes.Value = "";
+//                }
+//                else
+//                {
+//                    notes.Value = dol.notesSelect.ToString();
+//                }
 
-            }
-            return msg.ToString();
-        }
-#nullable enable
-        // Populate the online list
-        private static List<OnlineMeetingsModel> PopulateOnlineList(int? ZoomId, int? DayId, int? TimeId)
-        {
-            List<OnlineMeetingsModel> onlineList = new List<OnlineMeetingsModel>();
+//                connection.Open();
 
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                connection.Open();
+//                try
+//                {
+//                    cmd.ExecuteNonQuery();
+//                    if (sp == SPCREATE)
+//                    {
+//                        msg = cmd.Parameters["@new_id"].Value.ToString();
+//                    }
+//                }
+//                catch (SqlException ex)
+//                {
+//                    msg = msg + $" spUpdate OnlineList: {ex.Message.ToString()}";
+//                }
+//                finally
+//                {
+//                    connection.Close();
+//                }
 
-                SqlCommand cmd = new SqlCommand(SPGETONLINE, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
+//            }
+//            return msg.ToString();
+//        }
+//#nullable enable
+//        // Populate the online list
+//        private static List<OnlineMeetingsModel> PopulateOnlineList(int? ZoomId, int? DayId, int? TimeId)
+//        {
+//            List<OnlineMeetingsModel> onlineList = new List<OnlineMeetingsModel>();
 
-                // Add Parms
-                // ZoomtId
-                SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
-                if (ZoomId == 0 || ZoomId == null)
-                {
-                    zoomid.Value = null;
-                    ZoomId = 0;
-                }
-                else
-                {
-                    zoomid.Value = ZoomId;
-                }
+//            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+//            {
+//                connection.Open();
 
-                // DayId
-                SqlParameter dayid = cmd.Parameters.Add("@DayId", SqlDbType.Int);
-                if (DayId == 0  || DayId == 8)
-                {
-                    dayid.Value = null;
-                    DayId = 0;
-                }
-                else
-                {
-                    dayid.Value = DayId;
-                }
-                
-                // TimeId
-                SqlParameter timeid = cmd.Parameters.Add("@TimeId", SqlDbType.Int);
-                if (TimeId == 0)
-                {
-                    timeid.Value = null;
-                }
-                else
-                {
-                    timeid.Value = TimeId;
-                }
+//                SqlCommand cmd = new SqlCommand(SPGETONLINE, connection);
+//                cmd.CommandType = CommandType.StoredProcedure;
 
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    try
-                    {
-                        while (dr.Read())
-                        {
-                            OnlineMeetingsModel ol = new OnlineMeetingsModel();
-                            ol.zoomid = Convert.ToInt32(dr["zoomid"]);
-                            ol.dayid = Convert.ToInt32(dr["dayid"]);
-                            ol.day = Convert.ToString(dr["DayName"]);
-                            ol.timeid = Convert.ToInt32(dr["timeid"]);
-                            ol.time = Convert.ToString(dr["Time"]);
-                            ol.meetingid = Convert.ToString(dr["meetingid"]);
-                            // "password" is not allowed for it throws an out of range exception.
-                            ol.pswd = Convert.ToString(dr["pswd"]);
-                            ol.telephone = Convert.ToString(dr["telephone"]);
-                            ol.groupname = Convert.ToString(dr["groupname"]);
-                            ol.notes = Convert.ToString(dr["notes"]);
+//                // Add Parms
+//                // ZoomtId
+//                SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
+//                if (ZoomId == 0 || ZoomId == null)
+//                {
+//                    zoomid.Value = null;
+//                    ZoomId = 0;
+//                }
+//                else
+//                {
+//                    zoomid.Value = ZoomId;
+//                }
 
-                            onlineList.Add(ol);
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        msg = msg + $" onlineList: {ex.Message.ToString()}";
-                    }
-                    connection.Close();
-                }
+//                // DayId
+//                SqlParameter dayid = cmd.Parameters.Add("@DayId", SqlDbType.Int);
+//                if (DayId == 0 || DayId == 8)
+//                {
+//                    dayid.Value = null;
+//                    DayId = 0;
+//                }
+//                else
+//                {
+//                    dayid.Value = DayId;
+//                }
 
-                return onlineList;
-            }
-        }
+//                // TimeId
+//                SqlParameter timeid = cmd.Parameters.Add("@TimeId", SqlDbType.Int);
+//                if (TimeId == 0)
+//                {
+//                    timeid.Value = null;
+//                }
+//                else
+//                {
+//                    timeid.Value = TimeId;
+//                }
 
-        // Delete function
-        private static string DeleteFunction(int ZoomId)
-        {
+//                using (SqlDataReader dr = cmd.ExecuteReader())
+//                {
+//                    try
+//                    {
+//                        while (dr.Read())
+//                        {
+//                            OnlineMeetingsModel ol = new OnlineMeetingsModel();
+//                            ol.zoomid = Convert.ToInt32(dr["zoomid"]);
+//                            ol.dayid = Convert.ToInt32(dr["dayid"]);
+//                            ol.day = Convert.ToString(dr["DayName"]);
+//                            ol.timeid = Convert.ToInt32(dr["timeid"]);
+//                            ol.time = Convert.ToString(dr["Time"]);
+//                            ol.meetingid = Convert.ToString(dr["meetingid"]);
+//                            // "password" is not allowed for it throws an out of range exception.
+//                            ol.pswd = Convert.ToString(dr["pswd"]);
+//                            ol.telephone = Convert.ToString(dr["telephone"]);
+//                            ol.groupname = Convert.ToString(dr["groupname"]);
+//                            ol.notes = Convert.ToString(dr["notes"]);
+
+//                            onlineList.Add(ol);
+//                        }
+//                    }
+//                    catch (SqlException ex)
+//                    {
+//                        msg = msg + $" onlineList: {ex.Message.ToString()}";
+//                    }
+//                    connection.Close();
+//                }
+
+//                return onlineList;
+//            }
+//        }
+
+//        // Delete function
+//        private static string DeleteFunction(int ZoomId)
+//        {
 
 
 
-            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
-            {
-                SqlCommand cmd = new SqlCommand(SPDELETE, connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-                //todo: Finish this code
-                SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
-                zoomid.Value = ZoomId;
+//            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+//            {
+//                SqlCommand cmd = new SqlCommand(SPDELETE, connection);
+//                cmd.CommandType = CommandType.StoredProcedure;
+//                //todo: Finish this code
+//                SqlParameter zoomid = cmd.Parameters.Add("@ZoomId", SqlDbType.Int);
+//                zoomid.Value = ZoomId;
 
-                connection.Open();
+//                connection.Open();
 
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (SqlException ex)
-                {
-                    msg = $" spOnlineDelete{ex.Message.ToString()}";
-                }
-                finally
-                {
-                    connection.Close();
-                }                
-            }
+//                try
+//                {
+//                    cmd.ExecuteNonQuery();
+//                }
+//                catch (SqlException ex)
+//                {
+//                    msg = $" spOnlineDelete{ex.Message.ToString()}";
+//                }
+//                finally
+//                {
+//                    connection.Close();
+//                }
+//            }
 
-            return DELETE;
-        }
+//            return DELETE;
+//        }
     }
 }

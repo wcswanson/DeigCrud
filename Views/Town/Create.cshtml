@@ -1,0 +1,46 @@
+﻿@model DTownDistrictViewModel
+
+<div class="container-fluid container">
+
+    <h1>Add a Town</h1>
+    <h3>@ViewBag.Result</h3>
+    <h3>@ViewBag.Message</h3>
+
+    <form asp-controller="Town" method="post" role="form">
+        <main role="main" class="pb-3">
+            <div class="form-inline">
+                <br />
+                <table>
+                    <tr>
+                        <td>District</td>
+                        <td>Town</td>
+                        <td>Save</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"));">
+                                        <option value="-1">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input asp-for="TownNameSelect" option="Add" class="form-control" />
+                        </td>
+                        <td>
+                            <div class="text-center panel-body">
+                                <button type="submit" class="btn btn-sm btn-primary">Create</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div><br />
+                <div class="panel-body">
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">Back</a>
+                </div>
+            
+        </main>
+    </form>
+</div>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 // https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0
 namespace DeigCrud.Models
@@ -15,11 +10,13 @@ namespace DeigCrud.Models
         public int dayid { get; set; }
         public string day { get; set; }
         public int timeid { get; set; }
-        public string time {get; set;}
+        public string time { get; set; }
 
         [Display(Name = "Meeting Id")]
         [StringLength(11, MinimumLength = 3)]
-        
+
+        public int District { get; set; }       
+
         [Required]
         public string meetingid { get; set; }
         [Display(Name = "Password")]

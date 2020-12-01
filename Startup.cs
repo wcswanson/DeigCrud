@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DeigCrud.IdentityPolicy;
+using DeigCrud.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace DeigCrud
 {
@@ -23,6 +23,32 @@ namespace DeigCrud
         {
             // Added
             cnstr = Configuration.GetConnectionString("cnStr");
+
+            services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordPolicy>();
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:cnStrIdentity"]));
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(opts =>
+            {
+                opts.User.RequireUniqueEmail = true;
+                opts.Password.RequiredLength = 7;
+                opts.Password.RequireNonAlphanumeric = true;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireDigit = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".AspNetCore.Identity.Application";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+            });
+
+            // Default url: https://localhost:44316/Account/Login?ReturnUrl=%2F
+            // Use this to over ride the default path for no login
+            // https://localhost:44316/Authenticate/Login?ReturnUrl=%2F
+            //services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Authenticate/Login");
             services.AddControllersWithViews();
         }
 
@@ -45,7 +71,10 @@ namespace DeigCrud
             app.UseStaticFiles();
 
             app.UseRouting();
-          
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 // Modified
