@@ -133,6 +133,17 @@ namespace DeigCrud.Infrastructure
                     notes.Value = dol.notesSelect.ToString();
                 }
 
+                // Url               
+                SqlParameter urlname = cmd.Parameters.Add("@Url", SqlDbType.VarChar);
+                if (String.IsNullOrEmpty(dol.UrlSelect))
+                {
+                    urlname.Value = "";
+                }
+                else
+                {
+                    urlname.Value = dol.UrlSelect.ToString();
+                }
+
                 connection.Open();
 
                 try
@@ -234,6 +245,7 @@ namespace DeigCrud.Infrastructure
                             ol.telephone = Convert.ToString(dr["telephone"]);
                             ol.groupname = Convert.ToString(dr["groupname"]);
                             ol.notes = Convert.ToString(dr["notes"]);
+                            ol.url = Convert.ToString(dr["url"]);
 
                             onlineList.Add(ol);
                         }

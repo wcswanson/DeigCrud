@@ -15,6 +15,7 @@
                         <th>Group Name</th>
                         <th>Meeting Id</th>
                         <th>Password</th>
+                        <th>Url</th>
                         <th>Telephone</th>
                         <th>Notes</th>
                         <th>Update</th>
@@ -30,53 +31,58 @@
                         @foreach (var m in Model.OnlineListModel)
                         {
                             <!-- Begin of table -->
-                            <tr>
-                                <td>@m.zoomid</td>
+                <tr>
+                    <td>@m.zoomid</td>
 
-                                <td>
-                                    <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
-                                        <option value="@m.dayid">@m.day</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
-                                        <option value="@m.timeid">@m.time</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
-                                        <option value="@m.District">@m.District</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input asp-for="groupnameSelect" class="form-control" value="@m.groupname" />
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input asp-for="meetingidSelect" class="form-control" value="@m.meetingid" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input asp-for="pswdSelect" class="form-control" value="@m.pswd" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input asp-for="telephoneSelect" class="form-control" value="@m.telephone" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input asp-for="notesSelect" class="form-control" value="@m.notes" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="text-center panel-body">
-                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                    </div>
-                                </td>
-                            </tr>
+                    <td>
+                        <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                            <option value="@m.dayid">@m.day</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                            <option value="@m.timeid">@m.time</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                            <option value="@m.District">@m.District</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input asp-for="groupnameSelect" class="form-control" value="@m.groupname" />
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input asp-for="meetingidSelect" class="form-control" value="@m.meetingid" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input asp-for="pswdSelect" class="form-control" value="@m.pswd" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input asp-for="UrlSelect" class="form-control" value="@m.url" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input asp-for="telephoneSelect" class="form-control" value="@m.telephone" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input asp-for="notesSelect" class="form-control" value="@m.notes" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-center panel-body">
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </div>
+                    </td>
+                </tr>
                         }
                     }
                 </tbody>

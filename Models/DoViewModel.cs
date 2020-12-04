@@ -23,6 +23,7 @@ namespace DeigCrud.Models
         //District
         public int DistrictSelect { get; set; }
         public IEnumerable<SelectListItem> DistrictModel { get; set; }
+        public string UrlSelect { get; set; }
 
         // To get the rest of the online meeting data:
         public int zoomidSelect { get; set; }
